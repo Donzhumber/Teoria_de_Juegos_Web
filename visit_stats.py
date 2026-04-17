@@ -25,30 +25,63 @@ _DB_PATH = Path(__file__).resolve().parent / "visitor_stats.sqlite"
 _GEO_API_TMPL = "http://ip-api.com/json/{ip}?fields=status,message,country,countryCode,lat,lon"
 
 
+def _is_public_ip(ip: str) -> bool:
+    """True si la IP no es de rangos privados (RFC 1918), localhost o reservada."""
+    if not ip or not isinstance(ip, str):
+        return False
+    s = ip.strip()
+    if s in {"::1", "127.0.0.1", "0.0.0.0", "localhost"}:
+        return False
+    # Filtros basicos para IPv4 privado
+    # 10.x.x.x
+    if s.startswith("10."):
+        return False
+    # 192.168.x.x
+    if s.startswith("192.168."):
+        return False
+    # 172.16.x.x - 172.31.x.x
+    if s.startswith("172."):
+        try:
+            second = int(s.split(".")[1])
+            if 16 <= second <= 31:
+                return False
+        except (ValueError, IndexError):
+            pass
+    # 100.64.x.x (CGNAT)
+    if s.startswith("100.64."):
+        return False
+    # 169.254.x.x (Link-local)
+    if s.startswith("169.254."):
+        return False
+    return True
+
+
 def _raw_public_ip() -> Optional[str]:
-    """IP del cliente si es publica y conocida; None en localhost o detras de proxy sin XFF."""
-    # 1. Intentar con st.context.ip_address (nativo v1.34+)
+    """IP del cliente si es publica; busca en cabeceras de proxy hasta hallar una valida."""
+    # 1. Intentar cabeceras directas (suelen ser mas fiables en Streamlit Cloud / Nginx)
+    try:
+        h = st.context.headers
+        for hdr in ("x-forwarded-for", "x-real-ip", "cf-connecting-ip", "client-ip", "forwarded"):
+            val = h.get(hdr)
+            if val:
+                # Caso X-Forwarded-For: "client, proxy1, proxy2"
+                parts = [p.strip() for p in val.split(",")]
+                for part in parts:
+                    if _is_public_ip(part):
+                        return part
+    except Exception:
+        pass
+
+    # 2. Intentar con st.context.ip_address como ultimo recurso
     try:
         ip = st.context.ip_address
         if ip:
             s = str(ip).strip()
-            if s and s not in {"::1", "127.0.0.1", "0.0.0.0", "localhost"}:
+            if _is_public_ip(s):
                 return s
     except Exception:
         pass
 
-    # 2. Intentar con cabeceras directas (mas fiable en algunas nubes)
-    try:
-        h = st.context.headers
-        for hdr in ("x-forwarded-for", "x-real-ip", "cf-connecting-ip", "forwarded"):
-            val = h.get(hdr)
-            if val:
-                # Caso X-Forwarded-For: "client, proxy1, proxy2"
-                part = val.split(",")[0].strip()
-                if part and part not in {"::1", "127.0.0.1", "0.0.0.0", "localhost"}:
-                    return part
-    except Exception:
-        pass
     return None
 
 
