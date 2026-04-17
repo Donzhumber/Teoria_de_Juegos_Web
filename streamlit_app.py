@@ -34,6 +34,18 @@ st.set_page_config(
     layout="wide",
 )
 
+# --- ESTILO PARA BLOQUEAR MENÚS DE DESARROLLO ---
+st.markdown(
+    """
+    <style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 LABEL_ROW = ("A (fila arriba)", "B (fila abajo)")
 LABEL_COL = ("L (col. izq.)", "R (col. der.)")
 
