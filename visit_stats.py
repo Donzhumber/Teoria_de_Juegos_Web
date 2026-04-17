@@ -58,27 +58,25 @@ def _is_public_ip(ip: str) -> bool:
 
 def _raw_public_ip() -> Optional[str]:
     """Busca en TODAS las cabeceras hasta hallar una IP que pase _is_public_ip."""
-    header_names = ("x-forwarded-for", "x-real-ip", "cf-connecting-ip", "client-ip", "forwarded")
-    
     try:
         h = st.context.headers
-        # 1. Probar nombres conocidos
-        for hdr in header_names:
+        # 1. Probar nombres conocidos explicitos
+        for hdr in ("X-Forwarded-For", "X-Real-IP", "cf-connecting-ip", "x-forwarded-for"):
             val = h.get(hdr)
             if val:
-                for part in [p.strip() for p in val.split(",")]:
+                for part in [p.strip() for p in str(val).split(",")]:
                     if _is_public_ip(part): return part
         
-        # 2. Busqueda exhaustiva (por si el nombre varia en mayusculas/minusculas)
+        # 2. Busqueda exhaustiva en todos los items
         for k, v in h.items():
             k_low = k.lower()
-            if any(name in k_low for name in header_names) or "ip" in k_low:
+            if "forward" in k_low or "ip" in k_low or "client" in k_low:
                 for part in [p.strip() for p in str(v).split(",")]:
                     if _is_public_ip(part): return part
     except Exception:
         pass
 
-    # 3. Ultimo recurso
+    # 3. Ultimo recurso: ip_address
     try:
         ip = st.context.ip_address
         if ip and _is_public_ip(str(ip)):
@@ -89,16 +87,19 @@ def _raw_public_ip() -> Optional[str]:
 
 
 def _debug_ip_info() -> str:
-    """Retorna un resumen de lo que el sistema ve para diagnostico."""
+    """Diagnostico detallado de red."""
     try:
         h = st.context.headers
-        keys = sorted(list(h.keys()))
-        # Solo nombres de cabeceras interesantes
-        relevant = [k for k in keys if any(x in k.lower() for x in ("ip", "forw", "proto", "host"))]
-        ip_direct = str(st.context.ip_address) if st.context.ip_address else "None"
-        return f"Headers: {','.join(relevant)} | IP context: {ip_direct}"
+        keys = list(h.keys())
+        xff = h.get("X-Forwarded-For") or h.get("x-forwarded-for") or "Missing"
+        # Mostrar los primeros 8 chars del XFF para ver si es una IP valida
+        xff_snip = str(xff)[:9] + "..." if len(str(xff)) > 9 else str(xff)
+        
+        relevant = [k for k in keys if any(x in k.lower() for x in ("ip", "forw", "proto"))]
+        ip_ctx = str(st.context.ip_address) if st.context.ip_address else "None"
+        return f"XFF:({xff_snip}) | Keys:{','.join(relevant)} | Ctx:{ip_ctx}"
     except Exception as e:
-        return f"Error debug: {str(e)}"
+        return f"Dbg Err: {str(e)}"
 
 
 def _header_get(name: str) -> str:
