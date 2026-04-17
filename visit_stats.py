@@ -57,32 +57,48 @@ def _is_public_ip(ip: str) -> bool:
 
 
 def _raw_public_ip() -> Optional[str]:
-    """IP del cliente si es publica; busca en cabeceras de proxy hasta hallar una valida."""
-    # 1. Intentar cabeceras directas (suelen ser mas fiables en Streamlit Cloud / Nginx)
+    """Busca en TODAS las cabeceras hasta hallar una IP que pase _is_public_ip."""
+    header_names = ("x-forwarded-for", "x-real-ip", "cf-connecting-ip", "client-ip", "forwarded")
+    
     try:
         h = st.context.headers
-        for hdr in ("x-forwarded-for", "x-real-ip", "cf-connecting-ip", "client-ip", "forwarded"):
+        # 1. Probar nombres conocidos
+        for hdr in header_names:
             val = h.get(hdr)
             if val:
-                # Caso X-Forwarded-For: "client, proxy1, proxy2"
-                parts = [p.strip() for p in val.split(",")]
-                for part in parts:
-                    if _is_public_ip(part):
-                        return part
+                for part in [p.strip() for p in val.split(",")]:
+                    if _is_public_ip(part): return part
+        
+        # 2. Busqueda exhaustiva (por si el nombre varia en mayusculas/minusculas)
+        for k, v in h.items():
+            k_low = k.lower()
+            if any(name in k_low for name in header_names) or "ip" in k_low:
+                for part in [p.strip() for p in str(v).split(",")]:
+                    if _is_public_ip(part): return part
     except Exception:
         pass
 
-    # 2. Intentar con st.context.ip_address como ultimo recurso
+    # 3. Ultimo recurso
     try:
         ip = st.context.ip_address
-        if ip:
-            s = str(ip).strip()
-            if _is_public_ip(s):
-                return s
+        if ip and _is_public_ip(str(ip)):
+            return str(ip).strip()
     except Exception:
         pass
-
     return None
+
+
+def _debug_ip_info() -> str:
+    """Retorna un resumen de lo que el sistema ve para diagnostico."""
+    try:
+        h = st.context.headers
+        keys = sorted(list(h.keys()))
+        # Solo nombres de cabeceras interesantes
+        relevant = [k for k in keys if any(x in k.lower() for x in ("ip", "forw", "proto", "host"))]
+        ip_direct = str(st.context.ip_address) if st.context.ip_address else "None"
+        return f"Headers: {','.join(relevant)} | IP context: {ip_direct}"
+    except Exception as e:
+        return f"Error debug: {str(e)}"
 
 
 def _header_get(name: str) -> str:
@@ -335,9 +351,10 @@ def _render_visit_map_outside_expander() -> None:
     )
     if len(df) == 0:
         rip = _raw_public_ip()
+        dbg = _debug_ip_info()
         msg = (
-            "Sin puntos: falta IP publica/geolocalizacion. "
-            f"(IP detectada: {rip[:7] if rip else 'Ninguna'})"
+            f"Sin puntos: IP detectada: {rip[:7] if rip else 'Ninguna'}. "
+            f"<br><span style='opacity:0.5'>Debug: {dbg}</span>"
         )
         st.markdown(f'<p class="visit-stats-mini">{msg}</p>', unsafe_allow_html=True)
         return
