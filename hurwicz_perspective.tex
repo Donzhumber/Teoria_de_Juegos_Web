@@ -1,0 +1,127 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish, es-tabla, english]{babel} % English principal para este texto
+\usepackage[letterpaper, margin=1.2in]{geometry}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage[protrusion=true, expansion=true]{microtype} 
+\usepackage{titlesec} 
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{titling}
+
+% --- Colores Académicos ---
+\definecolor{MidnightBlue}{RGB}{25, 25, 112}
+\definecolor{SlateGray}{RGB}{112, 128, 144}
+
+% --- Tipografía Premium (Palatino Clone) ---
+\usepackage{newpxtext}
+\usepackage{newpxmath}
+
+% --- Personalización de Títulos (titlesec) ---
+\titleformat{\section}
+  {\normalfont\large\bfseries\scshape\color{MidnightBlue}}
+  {\thesection}{1em}{}[{\titlerule[0.5pt]\vspace{2pt}\titrulet[0.2pt]}]
+
+\titlespacing*{\section}{0pt}{2.5ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+% --- Entorno para Reminiscencias ---
+\newenvironment{reminiscence}{%
+    \itshape\color{black!80}%
+    \begin{quote}%
+}{%
+    \end{quote}%
+}
+
+% --- Comando para Bibliografía Elegante ---
+\newcommand{\bibentry}[1]{\noindent\hangindent=2.5em\hangafter=1 \small #1 \par\vspace{0.6em}}
+
+\begin{document}
+\selectlanguage{english}
+
+% --- Portada / Encabezado Estilo Libro ---
+\begin{center}
+    \vspace*{1cm}
+    {\color{SlateGray}\textsc{Chapter 1}} \\
+    \vspace{0.4cm}
+    \hrule height 1.5pt
+    \vspace{0.2cm}
+    \hrule height 0.5pt
+    \vspace{0.6cm}
+    {\huge\bfseries\color{MidnightBlue} A Perspective} \\
+    \vspace{0.6cm}
+    \hrule height 0.5pt
+    \vspace{0.2cm}
+    \hrule height 1.5pt
+    \vspace{0.8cm}
+    {\Large\scshape Leonid Hurwicz} \\
+    \vspace{1.5cm}
+\end{center}
+
+% --- Cuerpo del Texto ---
+\begin{reminiscence}
+Because this volume is dedicated to the memory of Elisha Pazner, let me start with two reminiscences. I first met Elisha sometime in 1969 or 1970 when I was visiting at Harvard. Elisha consulted with me on problems related to his dissertation. Initially, we did not find it easy to communicate, but I was impressed by his original insights and depth. 
+
+Then, after 1971, I was back at Minnesota and he was visiting at Northwestern. By that time we shared the interest in problems of implementation. We had conversations on several occasions, including at least one visit by Elisha to Minneapolis. He was, I remember, particularly concerned about the relationship of the positive ``free rider'' results due to Groves and Ledyard to my earlier negative results concerning incentive compatibility (extended to public goods by Ledyard and Roberts [1974]). I feel indebted to Elisha both for the stimulation to pursue this issue and clarification of many essential points.
+\end{reminiscence}
+
+\medskip
+
+Subsequently, Elisha's interests moved toward the implementation of rules satisfying criteria of fairness as well as efficiency in environments involving production, especially in the presence of a nontransferable endowment such as labor. His pathbreaking contributions in this area are discussed and references given in two essays of the present book (Varian and Thomson; Postlewaite).
+
+All the essays in this book qualify under the rubric of \textit{normative economics}: they go beyond the \textit{positive economics} designed to explain the observed economic phenomena and aim at the development of criteria to be used in judging economic policies and systems. Normative economics, in turn, has focused on two major issues: one examining the logic and merits of the various welfare criteria in terms of which the consequences of economic actions may be judged, and the other examining---in the light of such criteria---the workings of various policies and mechanisms.
+
+Among the essays in this volume, two---focused on welfare criteria (d'Aspremont; Varian and Thomson)---are of the first category; four---devoted to problems of implementation---are of the second category. Of the latter, one (Myerson) is devoted to Bayesian implementation, one (Muller and Satterthwaite) to dominance implementation, and two (Maskin; Postlewaite) to Nash implementation. Two essays (Kalai; Milgrom) are devoted to problems (bargaining, bidding) that are outside the present framework.
+
+The first category of studies has led to the development of the concepts of orderings and other attributes of social welfare, social welfare functions, and performance (or: social choice) functions or correspondences (rules). Among the orderings of social states, the Pareto criterion is the best known and most frequently used. More recently, different notions of fairness, so important in Pazner's work, have come to play an important role. 
+
+Among social welfare functions, those associated with the names of Bergson, Samuelson, and Arrow are of prime importance. Performance functions were perhaps first formalized and their importance stressed by Reiter and Mount in the context of informationally oriented models, and by Maskin in a game-theoretic (incentive-respecting) framework.\footnote{Among related precursor concepts one should mention that of a social choice function $C(S)$ in Arrow [1951, 1963] and the notion of the choice function $C(S, R)$ in Sen [1970]. It is important to note that the social performance correspondence need not be derived from any maximization process...}
+
+% --- Nueva Sección ---
+\section*{Public Goods}
+
+To begin with, standard theorems concerning the optimality properties of competitive equilibria assume the absence of public goods. Indeed, it is not obvious how the competitive equilibrium in an economy with public goods is to be defined. It seems clear, however, that any reasonable definition of a competitive market would not yield Pareto optimality in the presence of public goods. 
+
+On the other hand, Lindahl equilibrium in public goods economies is well defined and, under the customary assumptions of convexity and so on, Pareto optimal (Foley [1970], Milleron [1972]). But, as pointed out by Samuelson [1954, 1955], it may be unrealistic to expect the behavior required of individuals in order that a Lindahl equilibrium prevail.
+
+To understand the problem, let us illustrate the Lindahl equilibrium in Lindahl's own simple setting. In one scenario representing the Lindahl mechanism, there is an ``auctioneer'' proposing shares $p_i (i = 1, \dots, n)$, $\sum_{i=1}^n p_i = 1$, of the aggregate cost of a public service to be borne by the $n$ participants. Equilibrium obtains when the shares $p_i$ are so chosen that all agents desire the same level of public service, that is, $y_1 = \dots = y_n$.
+
+Let the $i$th agent's utility function be $\mathring{u}^i(x^i, y)$ where $x^i$ is private good $X$ and $y$ is the public service $Y$. We obtain the balance requirement:
+\[
+y = \sum_{i=1}^{n} t^i
+\]
+
+A \textit{Lindahl equilibrium} for the economy $\mathring{e} = (\mathring{e}^1, \dots, \mathring{e}^n)$ is defined as a vector such that:
+\begin{align*}
+    \sum_{i=1}^{n} p_i^* &= 1 \\
+    y^* &= \sum_{i=1}^{n} (\bar{x}^i - x^{*i})
+\end{align*}
+
+% --- Sección Economías de Dos Agentes ---
+\section*{Two-Agent Economies}
+
+It is worth noting that special difficulties arise with regard to balanced Nash implementation when there are only two agents ($n = 2$). Most mechanisms referred to in the preceding sections work only for three or more persons. It is possible, however, to Nash implement Walrasian and Lindahl correspondences when $n = 2$ by balanced (but discontinuous) outcome functions (Hurwicz [1979c], Miura [1982]).
+
+\section*{Private Goods Economies}
+
+Although the problem of designing an incentive-compatible mechanism was particularly obvious in economies with public goods, it also arises in private goods economies. In private goods economies the incentive to misrepresent dwindles as the economy increases, but this is not the case for public goods economies.
+
+\section*{Economies with Production}
+
+Private goods economies with production provided some of the original stimulus for the study of alternative mechanisms. In a socialist economy of the Lange--Lerner type, each manager is supposed to choose a profit-maximizing input--output vector treating prices parametrically.
+
+\vspace{2cm}
+
+% --- Bibliografía con formato estándar ---
+\begin{center}
+    {\large\scshape\color{MidnightBlue} References}
+    \vspace{0.5cm}
+\end{center}
+
+\bibentry{\textbf{Arrow, K. J.} [1951]. ``An Extension of the Basic Theorems of Welfare Economics,'' in \textit{Proceedings of the Second Berkeley Symposium}. Berkeley: University of California Press.}
+
+\bibentry{\textbf{Debreu, G.} [1959]. \textit{Theory of Value}. New York: Wiley.}
+
+\bibentry{\textbf{Sen, A. K.} [1970]. \textit{Collective Choice and Social Welfare}. San Francisco: Holden-Day.}
+
+\end{document}

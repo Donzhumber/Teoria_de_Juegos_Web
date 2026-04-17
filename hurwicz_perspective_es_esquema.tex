@@ -1,0 +1,261 @@
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish, es-tabla, english]{babel} 
+\usepackage[margin=1.2in]{geometry}
+\usepackage{amsmath, amssymb, amsfonts}
+\usepackage[protrusion=true, expansion=true]{microtype} 
+\usepackage{titlesec} 
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{titling}
+\usepackage[flushmargin, hang, bottom]{footmisc} 
+% --- Colores Académicos ---
+\definecolor{MidnightBlue}{RGB}{25, 25, 112}
+\definecolor{SlateGray}{RGB}{112, 128, 144}
+% --- Tipografía Premium (Palatino Clone) ---
+\usepackage{newpxtext}
+\usepackage{newpxmath}
+% --- Personalización de Títulos (titlesec) ---
+\titleformat{\section}
+  {\normalfont\large\bfseries\scshape\color{MidnightBlue}}
+  {\thesection}{1em}{}[{\titlerule[0.5pt]\vspace{2pt}\titlerule[0.2pt]}]
+\titlespacing*{\section}{0pt}{3.5ex plus 1ex minus .2ex}{2.3ex plus .2ex}
+% --- Entorno para Reminiscencias ---
+\newenvironment{reminiscence}{%
+    \itshape\color{black!85}%
+    \begin{quote}%
+}{%
+    \end{quote}%
+}
+% --- Comando para Bibliografía Elegante ---
+\newcommand{\bibentry}[1]{\noindent\hangindent=2.5em\hangafter=1 \small #1 \par\vspace{0.75em}}
+\begin{document}
+\selectlanguage{spanish}
+% --- Portada / Encabezado Estilo Libro ---
+\begin{center}
+    \vspace*{1cm}
+    {\color{SlateGray}\textsc{Capítulo 1}} \\
+    \vspace{0.4cm}
+    \hrule height 1.5pt
+    \vspace{0.2cm}
+    \hrule height 0.5pt
+    \vspace{0.6cm}
+    {\huge\bfseries\color{MidnightBlue} Una Perspectiva} \\
+    \vspace{0.6cm}
+    \hrule height 0.5pt
+    \vspace{0.2cm}
+    \hrule height 1.5pt
+    \vspace{0.8cm}
+    {\Large\scshape Leonid Hurwicz} \\
+    \vspace{1.5cm}
+\end{center}
+
+
+% --- Cuerpo del Texto ---
+
+Dado que este volumen está dedicado a la memoria de Elisha Pazner, permítanme comenzar con dos reminiscencias. Conocí a Elisha por primera vez en algún momento de 1969 o 1970 cuando estaba de visita en Harvard. Elisha me consultó sobre problemas relacionados con su tesis doctoral. Inicialmente, no nos resultó fácil comunicarnos, pero me impresionaron sus percepciones originales y su profundidad. 
+Luego, después de 1971, yo estaba de regreso en Minnesota y él estaba de visita en Northwestern. Para ese entonces compartíamos el interés por los problemas de implementación. Mantuvimos conversaciones en varias ocasiones, incluyendo al menos una visita de Elisha a Mineápolis. Recuerdo que estaba particularmente preocupado por la relación entre los resultados positivos sobre el ``polizón'' (free rider) debidos a Groves y Ledyard y mis anteriores resultados negativos relativos a la compatibilidad de incentivos (extendidos a los bienes públicos por Ledyard y Roberts [1974]). Me siento en deuda con Elisha tanto por el estímulo para perseguir este tema como por la aclaración de muchos puntos esenciales.
+
+\medskip
+Posteriormente, los intereses de Elisha se desplazaron hacia la implementación de reglas que satisficieran criterios de equidad y eficiencia en entornos que involucraran la producción, especialmente en presencia de una dotación no transferible como el trabajo. Sus contribuciones pioneras en esta área se discuten y se proporcionan referencias en dos ensayos del presente libro (Varian y Thomson; Postlewaite). \\
+
+Todos los ensayos en este libro califican bajo la rúbrica de la \textit{economía normativa}: van más allá de la \textit{economía positiva} diseñada para explicar los fenómenos económicos observados y apuntan al desarrollo de criterios para juzgar las políticas y los sistemas económicos. La economía normativa, a su vez, se ha centrado en dos cuestiones principales: una que examina la lógica y los méritos de los diversos criterios de bienestar en términos de los cuales pueden juzgarse las consecuencias de las acciones económicas, y la otra que examina ---a la luz de tales criterios--- el funcionamiento de diversas políticas y mecanismos. \\
+
+Entre los ensayos de este volumen, dos ---centrados en criterios de bienestar (d'Aspremont; Varian y Thomson)--- pertenecen a la primera categoría; cuatro ---dedicados a problemas de implementación---pertenecen a la segunda categoría. De estos últimos, uno (Myerson) está dedicado a la implementación bayesiana, uno (Muller y Satterthwaite) a la implementación por dominancia, y dos (Maskin; Postlewaite) a la implementación de Nash. Dos ensayos (Kalai; Milgrom) se dedican a problemas (negociación, licitación) que están fuera del marco actual. \\
+
+La primera categoría de estudios ha llevado al desarrollo de los conceptos de ordenamientos y otros atributos del bienestar social, funciones de bienestar social y funciones o correspondencias (reglas) de desempeño (o de elección social). Entre los ordenamientos de estados sociales, el criterio de Pareto es el más conocido y utilizado con mayor frecuencia. Más recientemente, diferentes nociones de equidad, tan importantes en el trabajo de Pazner, han pasado a desempeñar un papel relevante. Entre las funciones de bienestar social, las asociadas a los nombres de Bergson, Samuelson y Arrow son de primordial importancia. Las funciones de desempeño fueron quizás formalizadas por primera vez, y su importancia destacada, por Reiter y Mount en el contexto de modelos orientados a la información, y por Maskin en un marco de teoría de juegos (que respeta los incentivos).\footnote{Entre los conceptos precursores relacionados, cabe mencionar el de una función de elección social $C(S)$ en Arrow [1951, 1963] y la noción de la función de elección $C(S, R)$ en Sen [1970]. Es importante notar que, en su versión contemporánea, la correspondencia de desempeño social no necesita derivarse de ningún proceso de maximización, y que su dominio es una clase de entornos ($n$-tuplas de características individuales) en lugar de meramente conjuntos factibles y perfiles de preferencias. En particular, el statu quo (por ejemplo, la dotación inicial) puede formar parte de la especificación del entorno. La idea de un concepto más general de función de elección social se sugiere en Arrow ([1963], nota 34, p. 104).} \\
+
+
+En la literatura anterior (Bergson [1938], Lange [1942], Lerner [1944], Arrow [1951], Koopmans [1957], Debreu [1959], Arrow y Hahn [1971]), la pregunta central que se planteaba era si ciertos mecanismos (especialmente el mecanismo competitivo o el de monopolio) generaban asignaciones óptimas de Pareto y, de ser así, para qué categorías de entornos económicos. Posteriormente, la pregunta se invirtió: en lugar de considerar el mecanismo como dado y buscar la clase de entornos para los cuales funciona bien, se buscan mecanismos que funcionen bien para una clase dada de entornos. Inicialmente, en parte debido a la naturaleza de los debates de Hayek, Mises, Lange y Lerner sobre la viabilidad del socialismo, el énfasis se puso en los aspectos informativos (a diferencia de los incentivos) de los mecanismos económicos. Una pregunta planteada fue si, para entornos ``clásicos'',\footnote{Que satisfacen los supuestos de convexidad, divisibilidad, etc., como, por ejemplo, en las Proposiciones 4 y 5 de Koopmans [1957].} existen mecanismos con las mismas propiedades de optimalidad que la competencia perfecta pero, en cierto sentido, informativamente más eficientes que (o tan eficientes como) la competencia perfecta. Se demostró (Mount y Reiter [1974], Hurwicz [1977], Osana [1978]) que ningún mecanismo con un espacio de mensajes más pequeño garantizaría la optimalidad. Sato [1981] obtuvo resultados análogos para el mecanismo de Lindahl. Jordan [1982] obtuvo un resultado de unicidad para el mecanismo walrasiano bajo el postulado adicional de racionalidad individual.
+\\
+
+Pero no todos estaban satisfechos con el análisis del desempeño de diversos mecanismos restringido a entornos clásicos y a sus propiedades puramente informativas. En particular, las propiedades de los incentivos en dos tipos de entornos no clásicos habían atraído la atención de los economistas durante mucho tiempo: las tecnologías con rendimientos crecientes y los bienes públicos. De hecho, en cada una de estas áreas se habían sugerido mecanismos alternativos para complementar o sustituir al mercado competitivo: para los rendimientos crecientes, la fijación de precios por costo marginal; para los bienes públicos, la solución de Lindahl. (Véase Lindahl [1919], Hotelling [1938], Lange [1938], Lerner [1944]). \\
+
+Se demostró que cada uno de estos remedios tenía ciertos defectos, y el análisis de estos defectos condujo a importantes desarrollos teóricos. Para nuestros propósitos, el problema de los bienes públicos sirve como un excelente ejemplo. \\
+
+\section*{Bienes Públicos}
+Para empezar, los teoremas estándar relativos a las propiedades de optimalidad de los equilibrios competitivos suponen la ausencia de bienes públicos. De hecho, no es obvio cómo debe definirse el equilibrio competitivo en una economía con bienes públicos. Parece claro, sin embargo, que cualquier definición razonable de un mercado competitivo no produciría la optimalidad de Pareto en presencia de bienes públicos. Por otro lado, el equilibrio de Lindahl (este término se define formalmente más adelante) en economías de bienes públicos está bien definido y, bajo los supuestos habituales de convexidad y demás, es óptimo de Pareto (Foley [1970], Milleron [1972]). Pero, como señaló Samuelson [1954, 1955], puede resultar poco realista esperar el comportamiento requerido de los individuos para que prevalezca un equilibrio de Lindahl. \\
+
+
+Para comprender el problema, ilustremos el equilibrio de Lindahl en el sencillo marco del propio Lindahl. En un escenario que representa el mecanismo de Lindahl, hay un ``subastador'' que propone proporciones (shares) $p_i (i = 1, \dots, n)$, $\sum_{i=1}^n p_i = 1$, del costo total de un servicio público que deben sufragar los $n$ participantes; a su vez, el $i$-ésimo participante responde especificando el nivel $y_i$ del servicio público que maximizaría su utilidad dada su proporción $p_i$; el agente $i$ contribuiría entonces con $p_i y_i$ para cubrir los costos del servicio público. El equilibrio se obtiene cuando las proporciones $p_i$ se eligen de tal manera que todos los agentes deseen el mismo nivel de servicio público, es decir, $y_1 = \dots = y_n$. \\
+
+
+Sea la función de utilidad del $i$-ésimo agente en una economía con dos bienes $\mathring{u}^i(x^i, y)$, donde $x^i$ es la cantidad de bien privado $X$ que posee $i$ (después de impuestos) e $y$ es el nivel de servicio público $Y$ proporcionado a cada agente. Supongamos además, como se hace a menudo, que $Y$ puede producirse utilizando $X$ como insumo; que la función de producción es de rendimientos constantes; y que las unidades de medida se eligen de modo que una unidad de $X$ produzca una unidad de $Y$. Si la contribución de $X$ (impuesto pagado) por el agente $i$ se denota por $t^i$, tenemos $x^i = \bar{x}^i - t^i$, donde $\bar{x}^i$ es la dotación inicial de $X$ del agente $i$. Suponiendo una dotación inicial cero de $Y$ y la factibilidad de la eficiencia en la producción, obtenemos el requisito de equilibrio presupuestario:
+\[
+y = \sum_{i=1}^{n} t^i.
+\]
+Un \textit{equilibrio de Lindahl} para la economía $\mathring{e} = (\mathring{e}^1, \dots, \mathring{e}^n)$, $\mathring{e}^i = (\mathring{u}^i, \bar{x}^i)$ puede definirse como un vector
+\[
+(x^{*1}, \dots, x^{*n}, y^*; p^{*1}, \dots, p^{*n})
+\]
+tal que
+\begin{align*}
+    \sum_{i=1}^{n} p_i^* &= 1 \\
+    y^* &= \sum_{i=1}^{n} (\bar{x}^i - x^{*i});
+\end{align*}
+y para cada $i = 1, \dots, n$,
+\begin{gather*}
+    p^{*i} \geqq 0, \quad (x^{*i}, y^*) \text{ es individualmente factible,}\footnote{Es decir, $(x^{*i}, y^*)$ está en el conjunto de consumo $C$ del $i$-ésimo agente, elegido a menudo como el cuadrante no negativo.} \\
+    p_i^* y^* + x^{*i} = \bar{x}^i
+\end{gather*}
+y
+\[
+\mathring{u}^i(x^{*i}, y^*) \geqq \mathring{u}^i(x^i, y)
+\]
+para cada $(x^i, y)$ individualmente factible que satisfaga la igualdad presupuestaria $p_i^* y + x_i = \bar{x}^i$.
+Lo anterior define la \textit{correspondencia de asignación de Lindahl} $L$ sobre la clase $E$ de economías mediante
+\begin{quote}
+    $L(e) = \{(x^1, \dots, x^n, y) \colon$ para algún $(p^1, \dots, p^n)$, el vector $(x^1, \dots, x^n, y; p^1, \dots, p^n)$ es un equilibrio de Lindahl para $e \}$,
+\end{quote}
+para cada $e$ en $E$. [Aquí, nuevamente, $e = (e^1, \dots, e^n)$, $e^i = (u^i, \bar{x}^i)$]. \\
+
+El escenario de Lindahl supone que cada agente trata las proporciones propuestas $p_i$ de forma paramétrica (es decir, como dadas) y que la respuesta del agente $y_i$ se basa en la maximización de su función de utilidad \textit{verdadera}. Pero, como subrayó Samuelson, los agentes podrían encontrar ventajoso responder con un valor de $y_i$ que no maximice sus verdaderas funciones de utilidad. Es decir, podrían beneficiarse falseando sus preferencias. En consecuencia, el mecanismo de Lindahl puede no lograr producir resultados óptimos de Pareto. Si falla, ¿existe otro mecanismo que tenga éxito donde el de Lindahl fracasa? Al buscar tal mecanismo, ¿cómo debe formalizarse el problema? \\
+
+Una respuesta se encuentra en la teoría de los juegos no cooperativos.\footnote{Un papel importante en el desarrollo de la teoría de los bienes públicos lo desempeñaron las contribuciones pioneras de Drèze y de la Vallée Poussin [1969], Malinvaud [1969], y la literatura posterior orientada a la dinámica. Lamentablemente, no me es posible cubrir este trabajo en el presente ensayo.} Específicamente, se pueden considerar las reglas que prescriben el comportamiento de asignación de recursos (como Lindahl, o la maximización de beneficios competitiva, o la fijación de precios por costo marginal) como equivalentes a mecanismos de revelación directa, lo que da lugar a una clase especial de juegos (Hurwicz [1972]). Pero deben definirse los términos ``mecanismo'' y ``revelación directa''. \\
+
+Un \textit{mecanismo} se define dotando a cada uno de los $n$ participantes con un \textit{dominio de estrategias}, denotando por $S^i$ el dominio del $i$-ésimo agente, y la \textit{función de resultado} (también llamada función de resultado de la estrategia o forma de juego) denotada por $h$; esta función de resultado $h$ especifica la asignación de recursos $(x^1, \dots, x^n, y)$ resultante de cualquier $n$-tupla de elecciones de estrategia. Así, la función de resultado especifica las reglas del juego; para la economía descrita anteriormente, puede escribirse de la siguiente manera:
+\[
+(x^1, \dots, x^n, y) = h(s^1, \dots, s^n), \quad s^i \in S^i, \quad i = 1, \dots, n.
+\]
+Formalmente, un mecanismo es el par ordenado $(S, h)$, $S = S^1 \times \dots \times S^n$. El espacio de resultados que contiene el rango de $h$ se denotará por $Z$. \\
+
+Consideremos ahora una economía $e = (e^1, \dots, e^n)$ donde $e^i$ tiene la función de utilidad $u^i$, y un mecanismo $m = (S, h)$, $S = S^1 \times \dots \times S^n$. Sea $\Gamma$ el juego no cooperativo $(S, \varphi_{m,e})$ donde la función de pago del $i$-ésimo agente viene dada por $\varphi^i_{m,e}(s) = u^i(h(s))$ para todo $s en $S. Denotemos por $\nu_m(e)$ el conjunto de equilibrios de Nash del juego $\Gamma$ para la economía $e$.\footnote{$(s^{*1}, \dots, s^{*n}) = s^*$ en $S$ es un \textit{equilibrio de Nash} del juego $\Gamma = (S, \varphi)$, $S = S^1 \times \dots \times S^n$, si, para cada $i = 1, \dots, n$, se cumple que $\varphi^i(s^*) \geqq \varphi^i(i, s^j/s^*)$ para todo $s^j$ en $S^i$, donde $i, s^j/s^*$ denota la $n$-tupla $s^*$ con su $i$-ésima entrada $s^{*i}$ reemplazada por $s^j$.} Decimos que el mecanismo $m = (S, h)$ \textit{implementa en el sentido de Nash} una correspondencia de desempeño $F \colon E \to\to Z$ sobre $E$ si sucede que, para cada $e$ en $E$, (1) el conjunto $\nu_m(e)$ no está vacío, y (2) $h(\nu_m(e)) \subseteq F(e)$. (Esto a veces se denomina implementación ``débil''). \\
+
+El problema general de diseñar un mecanismo que produzca resultados óptimos de Pareto en un rango dado $E$ de entornos puede ahora enunciarse formalmente como el de encontrar un mecanismo que implemente la correspondencia de Pareto $P \colon E \to\to Z$ sobre $E$, donde $P(e)$ es el conjunto de asignaciones que son óptimas de Pareto para $e$. \\
+
+Un \textit{mecanismo de revelación directa} en $E = E^1 \times \dots \times E^n$ puede definirse por la siguiente propiedad: $S^i = E^i$, donde $E^{i} es la clase de características admisibles a priori del agente $i$ ($i = 1, \dots, n$).\\
+
+Un \textit{mecanismo natural de revelación directa}\footnote{El término \textit{natural} se introduce para centrar la atención en la propiedad postulada de la función de resultado.} en $E = E^{1} \times \dots \times E^{n}$ para la correspondencia de desempeño $F \colon E \to\to Z$ puede entonces definirse como un mecanismo de revelación directa en $E$ tal que, para $s = e$ [es decir, para $(s^{1}, \dots, s^{n}) = (e^{1}, \dots, e^{n})$], el resultado $h(s)$ es un elemento de $F(e)$; es decir, $h(s)|_{s=e} \in F(e)$. En particular, cuando $F$ es una función (univaluada) y el mecanismo $m$ es natural para $F$, se cumple que $h(s)|_{s=e} = F(e)$. Es decir, en un mecanismo natural de revelación directa, el resultado es aquel que sería deseable según la función de desempeño $F$ si los agentes fueran veraces. El juego correspondiente $\Gamma = (E, \varphi_{m,e})$ se denomina \textit{juego natural de revelación directa} para $F$. \\
+
+En tal juego natural de revelación directa para $F$, se desearía que la (única) $n$-tupla de estrategias de equilibrio de Nash sea \textit{veraz}; en ese caso, el mecanismo se denomina \textit{directo/sencillo} (straightforward). Este requisito puede escribirse como:
+\[
+\nu_\Gamma(e) = \{e\}.
+\]
+
+Porque claramente, en este caso, $\Gamma$ implementa a $F$ en el sentido de Nash. (No se sigue que un mecanismo deba ser sencillo para implementar $F$). Un mecanismo natural de revelación directa cuyos equilibrios de Nash son veraces se denomina \textit{incentivo-compatible} (o compatible con los incentivos). \\
+
+Resulta que (d'Aspremont y Gérard-Varet [1979b], Teorema 1; Dasgupta, Hammond y Maskin [1979], Teorema 7.1.1) que si un mecanismo es incentivo-compatible, sus equilibrios de Nash son también equilibrios de dominancia. Pero también se sabe que, en general, no existen mecanismos que garanticen equilibrios de dominancia para clases suficientemente amplias de entornos cuando $F$ es Pareto-óptima (es decir, una subcorrespondencia de la correspondencia de Pareto).\footnote{Para economías con utilidades transferibles (de la forma $u^i(x^i, y) = x + v_i(y)$) esta no existencia se deduce (a grandes rasgos) de los siguientes resultados. (1) Si para un mecanismo dado existen equilibrios de dominancia, entonces existe un mecanismo directo natural ``equivalente'' en el que la verdad es la estrategia dominante de todos (Dasgupta, Hammond y Maskin [1979], Teorema 4.1.1). (2) En dominios de funciones de valoración $V^i$ ``suavemente conectados'', cualquier mecanismo con equilibrios de dominancia veraces es un ``mecanismo de Groves'' (Green y Laffont [1977, 1979]; Holmström [1979], Teorema 1). (3) Un mecanismo de Groves es genéricamente desequilibrado (Green y Laffont [1979], Walker [1980], Teorema 1). (4) Un mecanismo desequilibrado no es óptimo de Pareto.} Por lo tanto, el objetivo de construir equilibrios incentivo-compatibles en el sentido de la definición anterior es demasiado ambicioso. (Esto es cierto no solo para las economías de bienes públicos, sino también para las economías de intercambio puro de bienes privados. Véase la discusión posterior). \\
+
+El reconocimiento de este hecho puede llevar a varias alternativas de compromiso. Se podría sacrificar la optimalidad de Pareto o postular creencias probabilísticas (bayesianas). Este último enfoque fue iniciado por Harsanyi [1967, 1968]; sus aplicaciones económicas incluyen contribuciones de d'Aspremont y Gérard-Varet [1979a,b] y Arrow [1977]. (Véase el ensayo de Myerson, en este volumen). Pero aquí nos limitaremos al estudio de otro compromiso, sacrificando la propiedad del equilibrio de dominancia. Seguiremos exigiendo optimalidad de Pareto e implementabilidad de Nash, pero ya no en un juego natural de revelación directa. Por lo tanto, ya no existe ninguna relación necesaria entre $S^{i} y E^{i}$ ni ningún requisito correspondiente a $h(s)|_{s=e} \in F(e)$. (De hecho, si el juego no es del tipo de revelación directa, $s = e$ ya no tiene sentido). \\
+
+En esta clase más amplia de juegos, la implementación de Nash de una correspondencia de desempeño óptima de Pareto ya no es imposible. Esto fue demostrado por Groves y Ledyard, quienes fueron los primeros en construir un mecanismo (no de tipo revelación directa) que producía asignaciones de Nash óptimas de Pareto en entornos de bienes públicos. Sin embargo, la correspondencia de desempeño del mecanismo de Groves-Ledyard no era individualmente racional. Por lo tanto, resultó natural preguntarse si se podría implementar en el sentido de Nash alguna correspondencia óptima de Pareto que fuera individualmente racional. Dado que el desempeño de Lindahl es tanto óptimo de Pareto como individualmente racional, la respuesta pudo ser afirmativa al demostrar que la correspondencia de Lindahl es implementable en el sentido de Nash. Resultó que no es difícil construir mecanismos que implementen la correspondencia de Lindahl en el sentido de Nash (Hurwicz [1979], Walker [1981]).\footnote{La contribución pionera al problema análogo en las economías de bienes privados se debe a Schmeidler [1976], quien construyó un mecanismo que implementa la correspondencia walrasiana en el sentido de Nash. Sin embargo, véase el texto posterior relativo al requisito de factibilidad individual.}\\
+
+Para la implementación equilibrada de la correspondencia de Lindahl cuando hay tres o más agentes, Hurwicz [1979s]\footnote{Una economía con dos bienes (uno público y otro privado) y tecnología de rendimientos constantes.} y Walker [1981] construyeron mecanismos \textit{suaves} que ignoran la condición de factibilidad individual.\footnote{Extendido a arbitrariamente muchos bienes públicos y privados y tecnologías más generales.} El primero tiene propuestas de precio-cantidad como mensajes estratégicos; es decir, $m_i = (p_i, y_i)$, y utiliza una disposición circular de los participantes de modo que cada agente $i$ es un subastador para su vecino, digamos el agente $i + 1$. La disposición de Walker es análoga pero utiliza un espacio de mensajes de menores dimensiones. Específicamente, en un mundo de dos bienes y $n$ agentes con rendimientos constantes, el espacio de estrategias de Walker es de dimensión $n$ mientras que el de Hurwicz es de dimensión $2n$. Claramente, el mecanismo de Walker minimiza la dimensionalidad del espacio de mensajes. \\
+
+El caso de las utilidades transferibles es algo especial. En este caso existe un nivel único interior óptimo de Pareto $\hat{y}$ del servicio público, definido para funciones de utilidad diferenciables por la condición de Samuelson $\sum_{i=1}^n v'_i(\hat{y}) = 1$. (La unicidad de $\hat{y}$ se deduce de que se supone que $v'_i$ es estrictamente decreciente). Para tales economías es posible diseñar mecanismos incentivo-compatibles que produzcan un nivel óptimo de Pareto $\hat{y}$ del servicio público (Clarke [1971], Groves [1970], Groves y Loeb [1975], Green y Laffont [1979]). Sin embargo, la condición de equilibrio presupuestario no puede satisfacerse en general, por lo que la asignación resultante, digamos $(x^{1}, \dots, x^{n}, \hat{y})$, no es, en general, óptima de Pareto. \\
+
+En Hurwicz, Maskin y Postlewaite [1980] se construye un mecanismo equilibrado (discontinuo) con espacios de estrategia de tipo perfil donde \textit{sí} se satisfacen las condiciones de factibilidad individual. Bajo condiciones adicionales sobre las preferencias, se implementa de manera factible una correspondencia de Lindahl restringida. \\
+
+Los mecanismos que acabamos de mencionar son equilibrados, en el sentido de que, para cada $s$ en $S$, se satisface el requisito de equilibrio presupuestario:
+\[
+y = \sum_{i=1}^{n} t^{i}
+\]
+es satisfecho.\footnote{Más explícitamente, escríbase $(t^{1}, \dots, t^{n}, y) = h(s) = (T^{1}(s), \dots, T^{n}(s), Y(s))$; entonces el requisito de equilibrio presupuestario es que $Y(s) = \sum_{i=1}^{n} T^{i}(s)$ para todo $s \in S$.} Pero el requisito de factibilidad individual [es decir, que $(x^i, y) \geqq 0$] podría haberse violado. (El mismo problema surgió en los mecanismos de Schmeidler [1976] y Hurwicz [1979] que implementan la correspondencia walrasiana en el sentido de Nash). Sin embargo, como se muestra en Hurwicz, Maskin y Postlewaite [1980], pueden construirse mecanismos análogos a los de Maskin [1977] para implementar en el sentido de Nash la correspondencia de Lindahl, la walrasiana y varias otras correspondencias sin violar ni el equilibrio presupuestario ni los requisitos de factibilidad individual. \\
+
+Estos hallazgos plantean la pregunta más general: ¿Qué correspondencias son implementables en el sentido de Nash sin violar los requisitos de factibilidad (individual y presupuestaria)? En gran medida, la pregunta fue respondida en Maskin [1977] para los casos en que el conjunto de resultados factibles es conocido a priori por el diseñador del mecanismo. Maskin demostró que (1) una correspondencia implementable en el sentido de Nash debe ser monótona;\footnote{$F$ es monótona cuando se cumple lo siguiente: si un resultado $z$ es deseable según $F$ para un perfil de preferencias $\mathbf{R}$, y otro perfil $\mathbf{R}'$ no es menos favorable para $z$ de lo que lo era $\mathbf{R}$, entonces $z$ también es deseable según $F$ para $\mathbf{R}'$ (Maskin [1977]). (``$z$ es deseable según $F$ para el entorno $e$'' significa que $z$ es un elemento de $F(e)$; ``$\mathbf{R}'$ no es menos favorable para $z$ de lo que lo era $\mathbf{R}$'' significa que $z R_i z'$ implica $z R'_i z'$ para todo $i$ y todo $z'$).} y (2) si hay al menos tres agentes, cualquier correspondencia que sea monótona y tenga la propiedad de ``ausencia de poder de veto'' (no-veto power)\footnote{$F$ tiene la propiedad de ``ausencia de poder de veto'' cuando se cumple lo siguiente: si un resultado $z$ es el más preferido por al menos $n - 1$ agentes, entonces $z$ es deseable según $F$ (Maskin [1977]).} es implementable en el sentido de Nash. \\
+
+En Hurwicz, Maskin y Postlewaite [1980] se dan condiciones análogas de implementabilidad de Nash para los casos en que el diseñador no conoce a priori el conjunto factible.\footnote{En particular, un ejemplo debido a Postlewaite (Hurwicz, Maskin y Postlewaite [1980]) muestra que en entornos donde pueden ocurrir equilibrios de frontera, la correspondencia walrasiana no es monótona y debe ser reemplazada por su contraparte ``restringida''.} \\
+
+Cabe señalar que los resultados de implementabilidad en Maskin [1977] y Hurwicz, Maskin y Postlewaite [1980] se demuestran mediante métodos constructivos. Así, por ejemplo, cuando el diseñador conoce a priori el conjunto factible y la correspondencia que se va a implementar es monótona y tiene la propiedad de ``ausencia de poder de veto'', la demostración de Maskin de la implementabilidad de Nash muestra cómo construir las funciones de resultado utilizando los perfiles de preferencias como variables estratégicas de los jugadores. En Hurwicz, Maskin y Postlewaite, se utilizan como variables estratégicas los perfiles $(e^{1}, \dots, e^{n})$, donde $e^{i}$ incluye dotaciones y/o conjuntos de producción, así como las preferencias del agente $i$. \\
+
+Los economistas están particularmente interesados en la implementación de correspondencias que sean óptimas de Pareto\footnote{Es decir, correspondencias $F$ tales que $F(e) \subseteq P(e)$ para todo $e$ en $E$, donde $P(e)$ es el conjunto de resultados óptimos de Pareto en el entorno $e$, y $E$ es la clase de entornos sobre los que se busca la implementación.} y que sean individualmente racionales o libres de envidia (es decir, equitativas). Sea $F$ óptima de Pareto e individualmente racional. Sorprendentemente, resulta que (Hurwicz [1979b]) si (i) $F$ es óptima de Pareto, individualmente racional y continua, (ii) $E$ es suficientemente amplia, y (iii) $F$ se implementa en el sentido de Nash sobre $E$, entonces (a) en las economías de bienes públicos $F \supseteq L$, mientras que (b) en las economías de intercambio puro de bienes privados, $F \supseteq W$ (donde $W$ es la correspondencia walrasiana). \\
+
+Un resultado análogo para las economías de intercambio puro de bienes privados relativo a la equidad se debe a Thomson [1979], quien demostró que si (i) $F$ es óptima de Pareto, libre de envidia y continua, (ii) $E$ es suficientemente amplia, y (iii) $F$ se implementa en el sentido de Nash sobre $E$, entonces $F \supseteq W_{I(w)}$. [Aquí $W_{I(w)}$ es la correspondencia walrasiana desde el punto de dotación inicial igualitaria $I(w)$ obtenido mediante la redistribución de $w = (w^{1}, \dots, w^{n})$; $w^{i}$ es el vector de dotación inicial de $i$.\footnote{Es decir, para $e = (e^{1}, \dots, e^{n})$, $e^{i} = (u^{i}, w^{i})$, $i = 1, \dots, n$, tenemos $z \in W_{I(w)}(e)$ si y solo si $z$ es la asignación walrasiana en una economía con las mismas preferencias $(u^{1}, \dots, u^{n})$ pero con la dotación inicial de cada agente igualada a $I(w) = \sum_{i=1}^{n} w^{i}/n$.}] \\
+
+\section*{Economías de Dos Agentes}
+Vale la pena señalar que surgen dificultades especiales con respecto a la implementación equilibrada de Nash cuando solo hay dos agentes ($n = 2$). La mayoría de los mecanismos mencionados en las secciones anteriores funcionan únicamente para tres o más personas. Sin embargo, es posible\footnote{Ignorando la condición de factibilidad individual.} implementar las correspondencias walrasiana y de Lindahl en el sentido de Nash cuando $n = 2$ mediante funciones de resultado equilibradas (pero discontinuas) (Hurwicz [1979c], Miura [1982]\footnote{Miura señala un error en la función de resultado que implementa la solución de Lindahl en Hurwicz [1979c]; su función de resultado modificada implementa la correspondencia de Lindahl para dos o más agentes.}). En Reichelstein [1984] se demuestra que esto no puede hacerse mediante funciones \textit{suaves}. (Hurwicz y Hans Weinberger han obtenido recientemente un resultado análogo para la correspondencia óptima de Pareto).  \\
+
+La implementación a través de perfiles como estrategias (como en Maskin [1977] y Hurwicz, Maskin y Postlewaite [1980]) tiene la desventaja de utilizar dominios de estrategia enormes (de hecho, de dimensión infinita) y funciones de resultado discontinuas. Pero debe entenderse que el enfoque de perfiles proporciona no solo la implementación de una correspondencia de desempeño particular sino, más bien, un \textit{algoritmo} para construir funciones de resultado que implementen una amplia clase de correspondencias de desempeño. \\
+
+Cuando se conoce la correspondencia específica que se va a implementar, puede ser posible hacerlo mucho mejor. En particular, para una economía de intercambio puro de bienes privados, con tres o más agentes, y con dotaciones conocidas a priori por el diseñador, Postlewaite y Wettstein [1983] han construido un mecanismo con una función de resultado \textit{continua} donde el dominio de estrategias de cada agente es de dimensión finita (igual a $2l + 1$, donde $l$ es el número de bienes), un mecanismo que implementa en el sentido de Nash la correspondencia walrasiana restringida. \\
+
+Para mecanismos equilibrados \textit{suaves}\footnote{Ignorando la condición de factibilidad individual.} Reichelstein [1982] ha encontrado dimensiones mínimas de los espacios de estrategia para implementar en el sentido de Nash la correspondencia walrasiana en economías de dos bienes con tres o más comerciantes.\footnote{Esta dimensión mínima es inferior a la utilizada en los mecanismos suaves y equilibrados que implementan la correspondencia walrasiana en Hurwicz [1979].} (Como se mencionó anteriormente, cuando solo hay dos comerciantes, la implementación suave de la correspondencia walrasiana es totalmente imposible.)
+\\
+\section*{Economías de Bienes Privados}
+
+Aunque el problema del diseño de un mecanismo incentivo-compatible era particularmente evidente en las economías con bienes públicos, también surge en las economías de bienes privados. Así, en Hurwicz [1972, Cap. 14] se demostró que en economías de intercambio puro simples (de dos personas y dos bienes) no existen mecanismos naturales de revelación directa incentivo-compatibles que garanticen la optimalidad de Pareto y la racionalidad individual. Un resultado análogo en Dasgupta, Hammond y Maskin [1979], Teorema 4.4.1, sustituye el requisito de racionalidad individual por el de no dictadura y amplía la clase de preferencias admisibles para permitir la falta de suavidad e incluso discontinuidades.\footnote{Parece que se requiere un refuerzo de los supuestos realizados en Dasgupta, Hammond y Maskin [1979] cuando el número de agentes supera los dos (Sonnenschein y Satterthwaite [1981], y una comunicación privada de Eric Maskin).} \\
+
+En [1983], Hurwicz y Walker demuestran que, sin postular la racionalidad individual, los mecanismos de equilibrio por dominancia son genéricamente no óptimos. Esta es una contrapartida del resultado de Walker [1980] para economías de bienes públicos y fue conjeturada por Walker en [1980]. \\
+
+Las economías de intercambio puro también fueron estudiadas por Satterthwaite [1976] y en Satterthwaite y Sonnenschein [1981]. Se demostró que los mecanismos de revelación directa ``regulares'' y ``sin mando'' (nonbossy) que son a prueba de estrategias (strategy-proof) y están definidos en un conjunto abierto de funciones de utilidad son serialmente dictatoriales. En ciertas economías con producción, esto puede generar falta de optimalidad. \\
+
+Cabe señalar que el paralelismo de los resultados de imposibilidad, entre economías con y sin bienes públicos, se rompe en las economías ``grandes'': en las economías de bienes privados el incentivo a falsear disminuye a medida que la economía aumenta, pero este no es el caso para las economías de bienes públicos (J. Roberts [1976], J. Roberts y Postlewaite [1976]). \\
+
+\section*{Economías con Producción}
+Las economías de bienes privados con producción proporcionaron parte del estímulo original para el estudio de mecanismos alternativos y juegos de compatibilidad de incentivos. Así, por ejemplo, en una economía socialista del tipo Lange-Lerner, si el entorno es ``clásico'', se supone que cada gerente de una unidad de producción debe elegir un vector de insumo-producto que maximice los beneficios \textit{tratando los precios de forma paramétrica}.\footnote{Más generalmente, cuando no se supone que la función de producción sea cóncava, el requisito es que el vector de insumo-producto rinda la igualdad de los precios de los productos y los costos marginales, de nuevo con todos los precios tratados de forma paramétrica.} (El resultado es un equilibrio competitivo). Pero si, por ejemplo, la empresa tiene el monopolio de su producto, podrían obtenerse mayores beneficios explotando el poder de monopolio, es decir, \textit{no} tratando los precios de forma paramétrica. Supongamos ahora que la recompensa del gerente es una función creciente de los beneficios. Esto crea un incentivo para falsear la función de producción de la empresa de tal manera que un nivel de producción que maximice los beneficios del monopolio para la verdadera función de producción se presente como la producción competitiva que maximiza los beneficios para una función de producción falsa (Hurwicz [1973]). Así, en una economía con un número finito de empresas, el mecanismo competitivo no es incentivo-compatible si las recompensas de quien toma las decisiones aumentan con los beneficios y prevalece la descentralización informativa.\footnote{Resulta de particular interés notar que imponer reglas de comportamiento (como la maximización de beneficios) donde las acciones se prescriben como funciones de las características de los agentes, y con el centro actuando sobre el supuesto de que estas reglas se obedecen honestamente, ¡es equivalente a operar un juego natural de revelación directa!}. Pero, de nuevo, es posible diseñar mecanismos que implementen una amplia clase de correspondencias de desempeño (Hurwicz, Maskin y Postlewaite [1980]). Estos mecanismos utilizan (como estrategias) los perfiles $(Y^{1}, \dots, Y^{n})$ de conjuntos de posibilidades de producción, de forma similar al uso de perfiles de preferencias en Maskin [1977]. Este problema es algo análogo al que surge en las economías en las que los agentes pueden destruir las dotaciones. El análisis de este último problema fue iniciado por Postlewaite [1979]. \\
+
+Cabe señalar que la presencia de producción crea dificultades para conciliar la eficiencia con ciertas nociones de equidad (por ejemplo, en el sentido de estar libre de envidia). Gran parte del trabajo de Pazner se dedicó a este problema. \\
+
+A estas alturas, la literatura que se ocupa de los mecanismos económicos es enorme. Las presentes notas no hacen más que perseguir unos pocos temas que parecen de especial importancia en las primeras etapas de desarrollo de esta área. La mayoría de los trabajadores en este campo distan mucho de estar satisfechos con los logros alcanzados hasta la fecha. Existen diferencias de opinión sobre la idoneidad de los diferentes modelos de la teoría de juegos. Es necesaria una mejor integración de los aspectos de incentivos e informativos de nuestros modelos. Asimismo, la cuestión de combinar la equidad con la eficiencia sigue estando ante nosotros. Las visiones pioneras de Elisha Pazner en esta área continuarán iluminando el camino de los futuros exploradores.
+\vspace{1.5cm}
+% --- Bibliografía Final ---
+\begin{center}
+    {\large\scshape\color{MidnightBlue} Referencias}
+    \vspace{0.8cm}
+\end{center}
+\bibentry{Arrow, K. J. [1951]. ``An Extension of the Basic Theorems of Welfare Economics,'' en \textit{Proceedings of the Second Berkeley Symposium on Mathematical Statistics and Probability} editado por G. Neyman, pp. 507--532. Berkeley: University of California Press.}
+\bibentry{Arrow, K. J. [1951, 1963]. \textit{Social Choice and Individual Values}. Nueva York: Wiley, 1951. New Haven: Yale University Press, 1963.}
+\bibentry{Arrow, K. J. [1977]. ``The Property Rights Doctrine and Demand Revelation under Incomplete Information.'' IMSSS Technical Report no. 243, Stanford University.}
+\bibentry{Arrow, K. J., y F. Hahn [1971]. \textit{General Competitive Analysis}. San Francisco: Holden-Day.}
+\bibentry{Bergson, A. [1938]. ``A Reformulation of Certain Aspects of Welfare Economics.'' \textit{Quarterly Journal of Economics}, 52:310--334.}
+\bibentry{Clarke, E. H. [1971]. ``Multipart Pricing of Public Goods.'' \textit{Public Choice}, 2:19--33.}
+\bibentry{Dasgupta, P., P. Hammond, y E. Maskin [1979]. ``The Implementation of Social Choice Rules: Some General Results on Incentive Compatibility.'' \textit{Review of Economic Studies}, 46:181--216.}
+\bibentry{d'Aspremont, C., y L.-A. Gérard-Varet [1979a]. ``On Bayesian Incentive Compatible Mechanisms,'' en \textit{Aggregation and Revelation of Preferences}, editado por J.-J. Laffont, Ch. 22, pp. 269--288. Ámsterdam: North Holland.}
+\bibentry{d'Aspremont, C., y L.-A. Gérard-Varet [1979b]. ``Incentives and Incomplete Information,'' \textit{Journal of Public Economics}, 11:25--45.}
+\bibentry{Debreu, G. [1959]. \textit{Theory of Value}. Nueva York: Wiley.}
+\bibentry{Drèze, J., y D. de la Vallée Poussin [1969]. ``A Tâtonnement Process for Guiding and Financing an Efficient Production for Public Goods,'' CORE paper, 1969. (\textit{RES}, 38 [1971], pp. 133--150.)}
+\bibentry{Foley, D. K. [1970]. ``Lindahl's Solution and the Core of an Economy with Public Goods.'' \textit{Econometrica}, 38:66--72.}
+\bibentry{Green, J., y J.-J. Laffont [1977]. ``Characterization of Satisfactory Mechanisms for the Revelation of Preferences for Public Goods.'' \textit{Econometrica}, 45: 427--438.}
+\bibentry{Green, J., y J.-J. Laffont [1979]. \textit{Incentives in Public Decision-Making}. Ámsterdam: North Holland.}
+\bibentry{Groves, T. [1970]. ``The Allocation of Resources under Uncertainty.'' Tesis doctoral no publicada, University of California, Berkeley.}
+\bibentry{Groves, T., y J. Ledyard [1977]. ``Optimal Allocation of Public Goods: A Solution to the `Free Rider' Problem.'' \textit{Econometrica}, 45(4):783--811.}
+\bibentry{Groves, T., y J. Ledyard [1980]. ``The Existence of Efficient and Incentive Compatible Equilibria with Public Goods.'' \textit{Econometrica}, 48:1487--1506.}
+\bibentry{Groves, T., y M. Loeb [1975]. ``Incentives and Public Inputs.'' \textit{Journal of Public Economies}, 4(3):211--226.}
+\bibentry{Harsanyi, J. [1967--68]. ``Games with Incomplete Information Played by Bayesian Players.'' \textit{Management Science} 14:159--82, 320--34, 486--502.}
+\bibentry{von Hayek, F.A. [1945]. ``The Use of Knowledge in Society.'' \textit{American Economic Review}, 35:519--530.}
+\bibentry{Holmström, B. [1979]. ``Groves Scheme on Restricted Domain.'' \textit{Econometrica}, 47: 1137--1144.}
+\bibentry{Hotelling, H. [1938]. ``The General Welfare in Relation to Problems of Taxation and of Railway and Utility Rates.'' \textit{Econometrica}, 6:242--269.}
+\bibentry{Hurwicz, L. [1972]. ``On Informationally Decentralized Systems,'' en \textit{Decision and Organization (Volume in Honor of J. Marschak)}, editado por R. Radner y C. B. McGuire, pp. 297--336. Ámsterdam: North Holland.}
+\bibentry{Hurwicz, L. [1973]. ``The Design of Mechanisms for Resource Allocation.'' \textit{American Economic Review}, 63:1--30, esp. pp. 25--26.}
+\bibentry{Hurwicz, L. [1977]. ``On the Dimensional Requirements of Informationally Decentralized Pareto-Satisfactory Processes,'' en \textit{Studies in Resource Allocation Processes}, editado por K. J. Arrow y L. Hurwicz, pp. 413--424. Cambridge: Cambridge University Press.}
+\bibentry{Hurwicz, L. [1979a]. ``Outcome Functions Yielding Walrasian and Lindahl Allocations at Nash Equilibrium Points.'' \textit{Review of Economic Studies}, 46(2):217--225.}
+\bibentry{Hurwicz, L. [1979b]. ``On Allocations Attainable through Nash Equilibria.'' \textit{Journal of Economic Theory}, 21, (1):140--165; también en: \textit{Aggregation and Revelation of Preferences}, editado por J.-J. Laffont, Ch. 22, pp. 397--419. Ámsterdam: North Holland.}
+\bibentry{Hurwicz, L. [1979c]. ``Balanced Outcome Functions Yielding Walrasian and Lindahl Allocations at Nash Equilibrium Points for Two or More Agents,'' en \textit{General Equilibrium, Growth, and Trade}, editado por R. Green y J. A. Scheinkman. Nueva York: Academic Press.}
+\bibentry{Hurwicz, L., E. Maskin, y A. Postlewaite [1980]. ``Feasible Implementation of Social Choice Correspondences by Nash Equilibria.'' Mimeo. [Abreviado como HMP.]}
+\bibentry{Hurwicz, L., y M. Walker [1983]. ``On the Generic Non-Optimality of Dominant-Strategy Mechanisms with an Application to Pure Exchange.'' Research Paper No. 250, circulado por el Economic Research Bureau, State University of New York at Stonybrook.}
+\bibentry{Johansen, L. [1963]. ``Some Notes on the Lindahl Theory of Determination of Public Expenditure,'' \textit{International Economic Review}, 4:346--358.}
+\bibentry{Jordan, J. S. [1982]. ``The Competitive Allocation Process Is Informationally Efficient Uniquely.'' \textit{Journal of Economic Theory}, 28:1--18.}
+\bibentry{Koopmans, T. C. [1957]. ``Allocation of Resources and the Price System,'' en \textit{Three Essays on the State of Economic Science}. Nueva York: McGraw-Hill.}
+\bibentry{Lange, O., y F. M. Taylor [1938]. \textit{On the Economic Theory of Socialism}. Mineápolis: University of Minnesota Press.}
+\bibentry{Lange, O. [1942]. ``The Foundations of Welfare Economics.'' \textit{Econometrica}, 10:215--228.}
+\bibentry{Ledyard, J. [1977]. ``Incentive Compatible Behavior in Core-Selecting Organizations.'' \textit{Econometrica}, 45(7):1607--1621.}
+\bibentry{Ledyard, J., y J. Roberts [1974]. ``On the Incentive Problems with Public Goods.'' Discussion Paper No. 116, CMSEMS, Northwestern University, Evanston, Ill.}
+\bibentry{Lerner, A. P. [1944]. \textit{Economics of Control}. Nueva York: Macmillan.}
+\bibentry{Lindahl, E. [1919]. ``Just Taxation---A Positive Solution,'' en \textit{Classics in the Theory of Public Finance}, editado por R. A. Musgrave y A. T. Peacock, Londres: Macmillan, 1964, pp. 168--176. (También, Nueva York: St. Martin's Press, 1964.)}
+\bibentry{Malinvaud, E. [1969]. ``Procédures pour la determinación d'un programme de consommation collective.'' Paper presented at the Brussels meeting of the Econometric Society, September 1969. Mimeo.}
+\bibentry{Maskin, E. [1977]. ``Nash Equilibrium and Welfare Optimality.'' Working paper, octubre 1977, Massachusetts Institute of Technology; programado para aparecer en \textit{Mathematics of Operations Research}.}
+\bibentry{Milleron, J.-C. [1972]. ``Theory of Value with Public Goods: A Survey Article.'' \textit{Journal of Economic Theory}, 5:419--477.}
+\bibentry{Miura, Rei [1982]. ``Counter-Example and Revised Outcome Function Yielding the Nash-Lindahl Equivalence for Two or More Agents.'' Keio University, Tokio. Artículo circulado privadamente.}
+\bibentry{Mount, K., y S. Reiter [1974]. ``The Informational Size of Message Spaces.'' \textit{Journal of Economic Theory}, 8(3):161--192.}
+\bibentry{Osana, H. [1978]. ``On the Informational Size of Message Spaces for Resource Allocation Processes.'' \textit{Journal of Economic Theory}, 17:66--78.}
+\bibentry{Postlewaite, A. [1979]. ``Manipulation via Endowments.'' \textit{Review of Economic Studies}, 46:255--262.}
+\bibentry{Postlewaite, A., y D. Wettstein [1983]. ``Implementing Constrained Walrasian Equilibria Continuously.'' CARESS Working Paper \#83-24, University of Pennsylvania.}
+\bibentry{Reichelstein, S. [1982]. ``On the Informational Requirements for the Implementation of Social Choice Rules.'' Handout for the Decentralized Conference, mayo.}
+\bibentry{Reichelstein, S. [1984]. ``Smooth versus Discontinuous Mechanisms.'' Febrero, artículo circulado privadamente.}
+\bibentry{Reiter, S. [1977]. ``Information and Performance in the (New)$^2$ Welfare Economics.'' \textit{American Economic Review}, 67(1):226--234.}
+\bibentry{Roberts, J. [1976]. ``The Incentives for Correct Revelation of Preferences and the Number of Consumers.'' \textit{Journal of Public Economics}, 6:359--374.}
+\bibentry{Roberts, J., y A. Postlewaite [1976]. ``The Incentives for Price-Taking Behavior in Large Economies.'' \textit{Econometrica}, 44:115--128.}
+\bibentry{Samuelson, P. [1954]. ``The Pure Theory of Public Expenditure.'' \textit{The Review of Economics and Statistics}, 36:387--389.}
+\bibentry{Samuelson, P. [1955]. ``Diagrammatic Exposition of a Theory of Public Expenditure.'' \textit{The Review of Economics and Statistics} 37:350--356.}
+\bibentry{Sato, F. [1981]. ``On the Informational Size of Message Spaces for Resource Allocation Processes in Economies with Public Goods,'' \textit{Journal of Economic Theory}, 24(1):48--69.}
+\bibentry{Satterthwaite, M. [1976]. ``Straightforward Allocation Mechanisms.'' Discussion Paper no. 253, CMSEMS, Northwestern University, Evanston, Ill. Octubre.}
+\bibentry{Satterthwaite, M., y H. Sonnenschein [1981]. ``Strategy Proof Allocation Mechanisms at Differentiable Points.'' \textit{Review of Economic Studies}, 48:587--597.}
+\bibentry{Schmeidler, D. [1976]. ``A Remark on a Game Theoretic Interpretation of Walras Equilibria.'' University of Minnesota, Mineápolis. Mimeo.}
+\bibentry{Schmeidler, D. [1980]. ``Walrasian Analysis via Strategic Outcome Functions.'' \textit{Econometrica}, 48:1585--1594.}
+\bibentry{Schmeidler, D. [1982]. ``A Condition Guaranteeing that the Nash Allocation Is Walrasian.'' \textit{Journal of Economic Theory}, 28:376--378.}
+\bibentry{Sen, A. K. [1970]. \textit{Collective Choice and Social Welfare}. San Francisco: Holden-Day.}
+\bibentry{Thomson, W. [1979]. ``Comment on L. Hurwicz: On Allocations Attainable through Nash Equilibria,'' en \textit{Aggregation and Revelation of Preferences}, editado por J.-J. Laffont, pp. 420--431. Ámsterdam: North Holland.}
+\bibentry{Walker, M. [1980]. ``On the Nonexistence of a Dominant Strategy Mechanism for Making Optimal Public Decisions.'' \textit{Econometrica}, 48(6):1521--1540.}
+\bibentry{Walker, M. [1981]. ``A Simple Incentive Compatible Scheme for Attaining Lindahl Allocations.'' \textit{Econometrica}, 49:65--73.}
+\end{document}
