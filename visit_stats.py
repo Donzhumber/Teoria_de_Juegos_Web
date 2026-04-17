@@ -9,6 +9,7 @@ from __future__ import annotations
 import hashlib
 import html
 import json
+import re
 import sqlite3
 import time
 import urllib.error
@@ -57,47 +58,48 @@ def _is_public_ip(ip: str) -> bool:
 
 
 def _raw_public_ip() -> Optional[str]:
-    """Busca en TODAS las cabeceras hasta hallar una IP que pase _is_public_ip."""
+    """Busca agresivamente cualquier IP valida en todas las cabeceras."""
     try:
         h = st.context.headers
-        # 1. Probar nombres conocidos explicitos
-        for hdr in ("X-Forwarded-For", "X-Real-IP", "cf-connecting-ip", "x-forwarded-for"):
-            val = h.get(hdr)
-            if val:
-                for part in [p.strip() for p in str(val).split(",")]:
-                    if _is_public_ip(part): return part
+        # Regex simple para hallar algo parecido a una IP (v4)
+        ip_pattern = re.compile(r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})')
         
-        # 2. Busqueda exhaustiva en todos los items
+        # 1. Buscar en TODAS las cabeceras cualquier cadena que parezca IP
         for k, v in h.items():
-            k_low = k.lower()
-            if "forward" in k_low or "ip" in k_low or "client" in k_low:
-                for part in [p.strip() for p in str(v).split(",")]:
-                    if _is_public_ip(part): return part
+            matches = ip_pattern.findall(str(v))
+            for ip_candidate in matches:
+                if _is_public_ip(ip_candidate):
+                    return ip_candidate
+        
+        # 2. Si no hay publicas, buscar cualquiera que no sea localhost (para ver que llega)
+        for k, v in h.items():
+            matches = ip_pattern.findall(str(v))
+            for ip_candidate in matches:
+                if ip_candidate not in {"127.0.0.1", "0.0.0.0"}:
+                    return ip_candidate
     except Exception:
         pass
 
     # 3. Ultimo recurso: ip_address
     try:
         ip = st.context.ip_address
-        if ip and _is_public_ip(str(ip)):
-            return str(ip).strip()
+        if ip:
+            s = str(ip).strip()
+            if s not in {"127.0.0.1", "0.0.0.0", "localhost"}:
+                return s
     except Exception:
         pass
     return None
 
 
 def _debug_ip_info() -> str:
-    """Diagnostico detallado de red."""
+    """Diagnostico final: dump de todas las llaves y valor completo de XFF."""
     try:
         h = st.context.headers
-        keys = list(h.keys())
+        keys = sorted(list(h.keys()))
         xff = h.get("X-Forwarded-For") or h.get("x-forwarded-for") or "Missing"
-        # Mostrar los primeros 8 chars del XFF para ver si es una IP valida
-        xff_snip = str(xff)[:9] + "..." if len(str(xff)) > 9 else str(xff)
-        
-        relevant = [k for k in keys if any(x in k.lower() for x in ("ip", "forw", "proto"))]
-        ip_ctx = str(st.context.ip_address) if st.context.ip_address else "None"
-        return f"XFF:({xff_snip}) | Keys:{','.join(relevant)} | Ctx:{ip_ctx}"
+        # Mostrar XFF completo (o casi todo) para ver la cadena real
+        return f"XFF:[{xff}] | AllKeys:{','.join(keys)[:60]}..."
     except Exception as e:
         return f"Dbg Err: {str(e)}"
 
