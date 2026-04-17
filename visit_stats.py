@@ -27,21 +27,29 @@ _GEO_API_TMPL = "http://ip-api.com/json/{ip}?fields=status,message,country,count
 
 def _raw_public_ip() -> Optional[str]:
     """IP del cliente si es publica y conocida; None en localhost o detras de proxy sin XFF."""
-    ip = st.context.ip_address
-    if ip:
-        s = str(ip).strip()
-        if s in {"::1", "127.0.0.1", "0.0.0.0"}:
-            return None
-        return s
+    # Intentar primero con el contexto nativo de Streamlit (disponible en versiones recientes)
+    try:
+        ip = st.context.ip_address
+        if ip:
+            s = str(ip).strip()
+            if s and s not in {"::1", "127.0.0.1", "0.0.0.0", "localhost"}:
+                return s
+    except Exception:
+        pass
+
+    # Fallback a cabeceras (comun en Streamlit Cloud)
     try:
         h = st.context.headers
-        xff = h.get("x-forwarded-for")
+        # Probar varias cabeceras comunes de proxies
+        for hdr in ("x-forwarded-for", "x-real-ip", "forwarded"):
+            val = h.get(hdr)
+            if val:
+                # X-Forwarded-For puede ser una lista separada por comas
+                part = val.split(",")[0].strip()
+                if part and part not in {"::1", "127.0.0.1", "0.0.0.0", "localhost"}:
+                    return part
     except Exception:
-        xff = None
-    if xff:
-        part = xff.split(",")[0].strip()
-        if part and part not in {"::1", "127.0.0.1", "0.0.0.0"}:
-            return part
+        pass
     return None
 
 
@@ -103,27 +111,41 @@ def _is_mobile_user_agent(ua: Optional[str]) -> bool:
 
 
 def _geo_lookup(ip: str) -> Tuple[Optional[str], Optional[str], Optional[float], Optional[float]]:
+    """Geolocalizacion usando ipapi.co (soporta HTTPS gratis)."""
     if not ip or ip.startswith("::1") or ip.startswith("127."):
         return None, None, None, None
     try:
-        safe = urllib.parse.quote(ip, safe=".:[]")
-        url = _GEO_API_TMPL.format(ip=safe)
-        req = urllib.request.Request(url, headers={"User-Agent": "Nash2x2-visit-stats/1"})
-        with urllib.request.urlopen(req, timeout=2.6) as resp:
+        # Usamos ipapi.co que permite HTTPS en su capa gratuita (aprox 1000/dia)
+        # Formato: https://ipapi.co/{ip}/json/
+        safe_ip = urllib.parse.quote(ip)
+        url = f"https://ipapi.co/{safe_ip}/json/"
+        req = urllib.request.Request(url, headers={"User-Agent": "Nash2x2-Analytics/1.0"})
+        with urllib.request.urlopen(req, timeout=4.0) as resp:
             data = json.loads(resp.read().decode("utf-8"))
-    except (urllib.error.URLError, urllib.error.HTTPError, TimeoutError, OSError, ValueError, json.JSONDecodeError):
+        
+        if data.get("error"):
+            # Probamos ip-api.com como fallback si ipapi.co falla o llega al limite
+            url_fallback = f"http://ip-api.com/json/{safe_ip}?fields=status,country,countryCode,lat,lon"
+            req_f = urllib.request.Request(url_fallback)
+            with urllib.request.urlopen(req_f, timeout=3.0) as resp_f:
+                data = json.loads(resp_f.read().decode("utf-8"))
+                if data.get("status") == "success":
+                    return (
+                        data.get("countryCode"),
+                        data.get("country"),
+                        float(data.get("lat", 0)) or None,
+                        float(data.get("lon", 0)) or None
+                    )
+            return None, None, None, None
+
+        lat = data.get("latitude")
+        lon = data.get("longitude")
+        cc = data.get("country_code")
+        cname = data.get("country_name")
+        return cc, cname, (float(lat) if lat else None), (float(lon) if lon else None)
+
+    except Exception:
         return None, None, None, None
-    if data.get("status") != "success":
-        return None, None, None, None
-    lat, lon = data.get("lat"), data.get("lon")
-    try:
-        lat_f = float(lat) if lat is not None else None
-        lon_f = float(lon) if lon is not None else None
-    except (TypeError, ValueError):
-        lat_f, lon_f = None, None
-    cc = data.get("countryCode") or None
-    cname = data.get("country") or None
-    return cc, cname, lat_f, lon_f
 
 
 def _ensure_db(conn: sqlite3.Connection) -> None:
@@ -287,12 +309,13 @@ def _render_visit_map_outside_expander() -> None:
             unsafe_allow_html=True,
         )
     plot_df = df[["lat", "lon"]].copy()
+    # Forzar nombres estandar para Streamlit
+    plot_df.columns = ["lat", "lon"]
+    
     st.map(
         plot_df,
-        latitude="lat",
-        longitude="lon",
         use_container_width=True,
-        height=260,
+        height=280,
         zoom=1,
     )
 
