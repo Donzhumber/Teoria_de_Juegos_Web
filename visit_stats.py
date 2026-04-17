@@ -58,50 +58,29 @@ def _is_public_ip(ip: str) -> bool:
 
 
 def _raw_public_ip() -> Optional[str]:
-    """Busca agresivamente cualquier IP valida en todas las cabeceras."""
+    """Busca agresivamente cualquier IP publica valida en todas las cabeceras."""
     try:
         h = st.context.headers
         # Regex simple para hallar algo parecido a una IP (v4)
         ip_pattern = re.compile(r'(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})')
         
-        # 1. Buscar en TODAS las cabeceras cualquier cadena que parezca IP
+        # 1. Buscar en TODAS las cabeceras cualquier cadena que parezca IP publica
         for k, v in h.items():
             matches = ip_pattern.findall(str(v))
             for ip_candidate in matches:
                 if _is_public_ip(ip_candidate):
                     return ip_candidate
-        
-        # 2. Si no hay publicas, buscar cualquiera que no sea localhost (para ver que llega)
-        for k, v in h.items():
-            matches = ip_pattern.findall(str(v))
-            for ip_candidate in matches:
-                if ip_candidate not in {"127.0.0.1", "0.0.0.0"}:
-                    return ip_candidate
     except Exception:
         pass
 
-    # 3. Ultimo recurso: ip_address
+    # 2. Como ultimo recurso, probar ip_address si es publica
     try:
         ip = st.context.ip_address
-        if ip:
-            s = str(ip).strip()
-            if s not in {"127.0.0.1", "0.0.0.0", "localhost"}:
-                return s
+        if ip and _is_public_ip(str(ip)):
+            return str(ip).strip()
     except Exception:
         pass
     return None
-
-
-def _debug_ip_info() -> str:
-    """Diagnostico final: dump de todas las llaves y valor completo de XFF."""
-    try:
-        h = st.context.headers
-        keys = sorted(list(h.keys()))
-        xff = h.get("X-Forwarded-For") or h.get("x-forwarded-for") or "Missing"
-        # Mostrar XFF completo (o casi todo) para ver la cadena real
-        return f"XFF:[{xff}] | AllKeys:{','.join(keys)[:60]}..."
-    except Exception as e:
-        return f"Dbg Err: {str(e)}"
 
 
 def _header_get(name: str) -> str:
@@ -353,13 +332,11 @@ def _render_visit_map_outside_expander() -> None:
         unsafe_allow_html=True,
     )
     if len(df) == 0:
-        rip = _raw_public_ip()
-        dbg = _debug_ip_info()
-        msg = (
-            f"Sin puntos: IP detectada: {rip[:7] if rip else 'Ninguna'}. "
-            f"<br><span style='opacity:0.5'>Debug: {dbg}</span>"
+        st.markdown(
+            '<p class="visit-stats-mini">Sin puntos: hace falta IP publica y geolocalizacion '
+            "(en local suele usarse huella de navegador sin mapa).</p>",
+            unsafe_allow_html=True,
         )
-        st.markdown(f'<p class="visit-stats-mini">{msg}</p>', unsafe_allow_html=True)
         return
     cc_h = _country_counts_html()
     if cc_h:
