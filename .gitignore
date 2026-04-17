@@ -6,3 +6,5 @@ venv/
 .env
 .DS_Store
 *.log
+visitor_stats.sqlite
+visitor_stats.sqlite-*
