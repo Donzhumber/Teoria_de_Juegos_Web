@@ -148,22 +148,41 @@ with tabs[1]:
             st.plotly_chart(fig_hist, use_container_width=True)
 
 # ------------------------------------------------------------
-# TAB 3: METHODOLOGY
+# TAB 3: METHODOLOGY & DATA
 # ------------------------------------------------------------
 with tabs[2]:
-    st.markdown("""
-    ### Econometric Framework
+    st.markdown("## Investigational Framework & Data Sources")
     
-    This simulation implements a **Dynamic Bayesian Learning Mechanism** where the State and the Victim's Family face uncertainty about the kidnapper's identity and motivations.
+    col_m1, col_m2 = st.columns([2, 1])
     
-    #### Core Components:
-    1.  **Type Space ($\Theta$):** Combinations of Organization (DC, PAR, ELN, FARC), Financial Policy (Pay/NoPay), and Visibility (Public/NonPublic).
-    2.  **Bayesian Update:** The State updates its beliefs ($\mu_t$) based on survival events and family interactions using multi-level Hazard functions estimated via Cox Proportional Hazard models.
-    3.  **Optimal Control:** The State optimizes intensities ($\alpha, \gamma$) by balancing social costs of death and ransom payments against the likelihood of rescue.
-    4.  **Softmax Selection:** Decisions are not purely deterministic; they follow a stochastic optimization rule ($\xi$) to reflect real-world variability and prevent agent-bias.
-    
-    *Developed as a digital twin of the theoretical MATLAB framework.*
-    """)
+    with col_m1:
+        try:
+            with open("Informe_Secuestro_OMC.md", "r", encoding="utf-8") as f:
+                methodology_text = f.read()
+                st.markdown(methodology_text)
+        except Exception as e:
+            st.error(f"Error loading methodology report: {e}")
+            st.markdown("### Theoretical Framework")
+            st.markdown("""
+            This simulation implements a **Dynamic Bayesian Learning Mechanism** where the State and the Victim's Family face uncertainty about the kidnapper's identity.
+            """)
+            
+    with col_m2:
+        st.info("### Key Variables")
+        st.markdown("""
+        - **Organization (k):** DC, PAR, ELN, FARC.
+        - **Policies (α, γ):** Intensities of Investigation and Rescue.
+        - **Beliefs (μ):** Probability distribution over the type space.
+        - **Bayesian Update:** Real-time adaptation to observed survival.
+        """)
+        
+        st.warning("### Academic Use Only")
+        st.caption("This tool is designed for teaching Game Theory and Bayesian Inference in the context of the Colombian conflict.")
+
+# Footer
+st.sidebar.markdown("---")
+st.sidebar.caption("🚀 **Deploy Mode Active**")
+st.sidebar.info("Students can access this panel to parameters and run Monte Carlo simulations.")
 
 # Footer
 st.markdown("---")
