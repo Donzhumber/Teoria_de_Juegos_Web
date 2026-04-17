@@ -1,0 +1,57 @@
+USO EN OTRO ORDENADOR (verificacion y limitaciones)
+====================================================
+
+No se puede "probar un segundo PC" desde este proyecto automaticamente; lo que
+sigue es lo que debe cumplirse para que funcione al copiar la carpeta.
+
+1) OTRO MAC (recomendado con la app generada)
+---------------------------------------------
+- Al hacer clic, el lanzador intenta abrir **Google Chrome** por defecto
+  (bundle com.google.Chrome, /Applications, ~/Applications, Canary). Si no
+  hay Chrome, abre el navegador predeterminado del sistema.
+- Copie TODA la carpeta: nash_best_response_app (incluido NashBR Launcher.app
+  dentro de esa carpeta). No mueva solo el .app al Escritorio sin el resto.
+- En el otro Mac installe Python 3 y en Terminal ejecute una vez:
+    cd ruta/a/nash_best_response_app
+    python3 -m pip install -r requirements.txt
+- Doble clic en "verificar_entorno.command": debe salir todo [OK].
+- Doble clic en "NashBR Launcher.app" o "Abrir Nash BR.command".
+- Si macOS bloquea el .app: clic derecho > Abrir (la primera vez).
+- Si vino de Internet/zip: en Terminal:
+    xattr -cr "NashBR Launcher.app"
+
+2) ABRIR DESDE OTRO PC EN LA MISMA RED WI-FI/LAN (sin copiar la app al otro)
+----------------------------------------------------------------------------
+La aplicacion .app solo arranca el servidor en ESE Mac. En el otro ordenador
+abra el NAVEGADOR y escriba la URL (no hace falta el .app en el segundo PC).
+
+En el Mac que sirve la app, en Terminal antes de abrir, o exporte en el mismo
+usuario que lanza el .app (solo avanzado):
+
+    export NASH_BR_LAN=1
+    # luego doble clic al .app desde Terminal no es trivial; mejor use:
+    Abrir Nash BR.command   # tras editar el script para exportar NASH_BR_LAN=1
+    # o ejecute a mano:
+    cd .../nash_best_response_app
+    NASH_BR_LAN=1 python3 -m streamlit run app.py --server.headless true --server.port 8788 --server.address 0.0.0.0
+
+Luego en el otro equipo: http://IP-DEL-MAC-SERVIDOR:8788/
+(Desactive firewall o permita el puerto si no carga.)
+
+3) WINDOWS
+----------
+Doble clic en Abrir_Nash_BR.bat en la misma carpeta. Busca Chrome en las rutas
+tipicas de Program Files y abre la URL alli; si no hay Chrome, usa el navegador
+predeterminado.
+
+O en cmd, en la carpeta del proyecto:
+
+    py -3 -m pip install -r requirements.txt
+    py -3 -m streamlit run app.py --server.port 8788
+
+NashBR Launcher.app y .command son solo para macOS.
+
+4) PUERTO
+---------
+Por defecto 8788. Si esta ocupado: en Terminal antes de lanzar,
+    export NASH_BR_PORT=8799
