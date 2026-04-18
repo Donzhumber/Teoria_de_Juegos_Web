@@ -683,7 +683,7 @@ Análisis Equilibrio de Nash (2x2)
 </h1>
 <p style="font-size: 1.05rem; margin: 0.25rem 0; line-height: 1.35;">Pr. Humberto Bernal</p>
 <p style="font-size: 0.98rem; margin: 0.25rem 0; line-height: 1.35;">
-<a href="mailto:hbernal@universidadmayor.edu.co">hbernal@universidadmayor.edu.co</a>
+<a href="mailto:hbernalc@universidadmayor.edu.co">hbernalc@universidadmayor.edu.co</a>
 </p>
 </div>
 """,
