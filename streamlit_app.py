@@ -12,7 +12,13 @@ import numpy as np
 import streamlit as st
 from matplotlib.lines import Line2D
 
+from ui_layout import detect_mobile_client, responsive_layout_css
 from visit_stats import maybe_record_visit, render_visit_stats_in_sidebar
+
+try:
+    _MOBILE_UI = detect_mobile_client()
+except Exception:
+    _MOBILE_UI = False
 
 from game_logic import (
     PayoffMatrix,
@@ -29,22 +35,29 @@ from game_logic import (
 )
 
 st.set_page_config(
-    page_title="Nash 2x2 - Mejor respuesta",
+    page_title="Análisis Equilibrio de Nash (2x2)",
     page_icon="",
-    layout="wide",
+    layout="centered" if _MOBILE_UI else "wide",
+    initial_sidebar_state="collapsed" if _MOBILE_UI else "expanded",
 )
 
-# --- ESTILO PARA BLOQUEAR MENÚS DE DESARROLLO ---
+# --- ESTILO PARA BLOQUEAR MENÚS DE DESARROLLO + responsive (pantallas estrechas) ---
 st.markdown(
-    """
+    f"""
     <style>
-    #MainMenu {visibility: hidden;}
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
+    #MainMenu {{visibility: hidden;}}
+    footer {{visibility: hidden;}}
+    /* No ocultar `header`: ahi va el control para abrir/cerrar la barra lateral (flecha / menu). */
+    {responsive_layout_css()}
     </style>
     """,
-    unsafe_allow_html=True
+    unsafe_allow_html=True,
 )
+if _MOBILE_UI:
+    st.caption(
+        "Vista movil: pulse **arriba a la izquierda** el icono de menu (flecha) para abrir la barra lateral "
+        "(ejemplos de matriz y visitas). `?m=0` en la URL fuerza vista escritorio."
+    )
 
 LABEL_ROW = ("A (fila arriba)", "B (fila abajo)")
 LABEL_COL = ("L (col. izq.)", "R (col. der.)")
@@ -128,9 +141,11 @@ def plot_best_response(
     M: PayoffMatrix,
     q_cursor: Optional[float] = None,
     p_cursor: Optional[float] = None,
+    *,
+    compact: bool = False,
 ) -> plt.Figure:
     """Correspondencias BR en (q, p). Si se pasan q_cursor y p_cursor, marca la posicion del usuario."""
-    fig, ax = plt.subplots(figsize=(7.8, 9.2))
+    fig, ax = plt.subplots(figsize=(6.4, 7.0) if compact else (7.8, 9.2))
 
     qs, p_lo, p_hi = sample_br1_curve(M)
     for k in range(len(qs) - 1):
@@ -223,14 +238,15 @@ def plot_best_response(
 
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 1)
-    ax.set_xlabel(r"$q$ = prob. jugador 2 juega L", fontsize=14)
-    ax.set_ylabel(r"$p$ = prob. jugador 1 juega A", fontsize=14)
+    fs_ax = (11, 11, 10) if compact else (14, 14, 13)
+    ax.set_xlabel(r"$q$ = prob. jugador 2 juega L", fontsize=fs_ax[0])
+    ax.set_ylabel(r"$p$ = prob. jugador 1 juega A", fontsize=fs_ax[1])
     ax.set_title(
         "Interseccion de correspondencias de mejor respuesta en (q, p)",
-        fontsize=17,
-        pad=14,
+        fontsize=13 if compact else 17,
+        pad=10 if compact else 14,
     )
-    ax.tick_params(axis="both", labelsize=13)
+    ax.tick_params(axis="both", labelsize=fs_ax[2])
     ax.grid(True, alpha=0.3)
 
     if q_cursor is not None and p_cursor is not None:
@@ -290,12 +306,17 @@ def plot_best_response(
         loc="upper center",
         bbox_to_anchor=(0.5, -0.30),
         ncol=2,
-        fontsize=14,
+        fontsize=9 if compact else 14,
         frameon=True,
         framealpha=0.96,
     )
     # Margen inferior amplio: la leyenda queda bajo el eje x y no se superpone al titulo horizontal (xlabel).
-    fig.subplots_adjust(left=0.12, right=0.98, top=0.87, bottom=0.48)
+    fig.subplots_adjust(
+        left=0.14 if compact else 0.12,
+        right=0.98,
+        top=0.84 if compact else 0.87,
+        bottom=0.50 if compact else 0.48,
+    )
     return fig
 
 
@@ -321,14 +342,16 @@ def _p_indiferencia_j2(M: PayoffMatrix) -> Optional[float]:
     return None
 
 
-def plot_eu_jugador1_vs_q(M: PayoffMatrix, q_mark: Optional[float] = None) -> plt.Figure:
+def plot_eu_jugador1_vs_q(
+    M: PayoffMatrix, q_mark: Optional[float] = None, *, compact: bool = False
+) -> plt.Figure:
     """EU del jugador 1 al variar q (prob. de L del jugador 2); BR1 donde cada curva domina.
     q_mark: probabilidad q actual (deslizador) para marcar en el eje horizontal."""
     q = np.linspace(0.0, 1.0, 400)
     eu_a = q * M.u1_AL + (1.0 - q) * M.u1_AR
     eu_b = q * M.u1_BL + (1.0 - q) * M.u1_BR
 
-    fig, ax = plt.subplots(figsize=(11.0, 7.0))
+    fig, ax = plt.subplots(figsize=(6.8, 4.9) if compact else (11.0, 7.0))
     ax.plot(q, eu_a, color="#1f77b4", lw=3.0, label=r"$EU_1(A,q)=q\,u_1(A,L)+(1-q)\,u_1(A,R)$")
     ax.plot(q, eu_b, color="#ff7f0e", lw=3.0, label=r"$EU_1(B,q)=q\,u_1(B,L)+(1-q)\,u_1(B,R)$")
     ax.fill_between(
@@ -361,7 +384,7 @@ def plot_eu_jugador1_vs_q(M: PayoffMatrix, q_mark: Optional[float] = None) -> pl
             xy=(q_ind, y1),
             xytext=(10, -18),
             textcoords="offset points",
-            fontsize=20,
+            fontsize=13 if compact else 20,
         )
 
     ax.set_xlim(0, 1)
@@ -372,20 +395,23 @@ def plot_eu_jugador1_vs_q(M: PayoffMatrix, q_mark: Optional[float] = None) -> pl
         ax.axvline(qm, color="#7b1fa2", lw=3.0, zorder=10, alpha=0.95)
         ax.scatter([qm], [eu_a_m], s=160, c="#ffc107", zorder=11, edgecolors="#4a148c", linewidths=2)
         ax.scatter([qm], [eu_b_m], s=160, c="#ffc107", zorder=11, edgecolors="#4a148c", linewidths=2)
-    ax.set_xlabel(r"$q$ = probabilidad de que el jugador 2 juegue $L$", fontsize=22)
-    ax.set_ylabel(r"Utilidad esperada del jugador 1", fontsize=22)
+    ax.set_xlabel(
+        r"$q$ = probabilidad de que el jugador 2 juegue $L$",
+        fontsize=13 if compact else 22,
+    )
+    ax.set_ylabel(r"Utilidad esperada del jugador 1", fontsize=13 if compact else 22)
     ax.set_title(
         "Jugador 1: EU al mover la mezcla del jugador 2\ny region de mejor respuesta",
-        fontsize=24,
-        pad=18,
+        fontsize=15 if compact else 24,
+        pad=10 if compact else 18,
     )
-    ax.tick_params(axis="both", labelsize=20)
+    ax.tick_params(axis="both", labelsize=12 if compact else 20)
     ax.grid(True, alpha=0.3)
     ax.legend(
         loc="upper center",
         bbox_to_anchor=(0.5, -0.26),
         ncol=2,
-        fontsize=18,
+        fontsize=11 if compact else 18,
         frameon=True,
         framealpha=0.96,
     )
@@ -393,14 +419,16 @@ def plot_eu_jugador1_vs_q(M: PayoffMatrix, q_mark: Optional[float] = None) -> pl
     return fig
 
 
-def plot_eu_jugador2_vs_p(M: PayoffMatrix, p_mark: Optional[float] = None) -> plt.Figure:
+def plot_eu_jugador2_vs_p(
+    M: PayoffMatrix, p_mark: Optional[float] = None, *, compact: bool = False
+) -> plt.Figure:
     """EU del jugador 2 al variar p (prob. de A del jugador 1); BR2 donde cada curva domina.
     p_mark: probabilidad p actual (deslizador) para marcar en el eje horizontal."""
     p = np.linspace(0.0, 1.0, 400)
     eu_l = p * M.u2_AL + (1.0 - p) * M.u2_BL
     eu_r = p * M.u2_AR + (1.0 - p) * M.u2_BR
 
-    fig, ax = plt.subplots(figsize=(11.0, 7.0))
+    fig, ax = plt.subplots(figsize=(6.8, 4.9) if compact else (11.0, 7.0))
     ax.plot(p, eu_l, color="#2ca02c", lw=3.0, label=r"$EU_2(L,p)=p\,u_2(A,L)+(1-p)\,u_2(B,L)$")
     ax.plot(p, eu_r, color="#d62728", lw=3.0, label=r"$EU_2(R,p)=p\,u_2(A,R)+(1-p)\,u_2(B,R)$")
     ax.fill_between(
@@ -433,7 +461,7 @@ def plot_eu_jugador2_vs_p(M: PayoffMatrix, p_mark: Optional[float] = None) -> pl
             xy=(p_ind, y1),
             xytext=(10, -18),
             textcoords="offset points",
-            fontsize=20,
+            fontsize=13 if compact else 20,
         )
 
     ax.set_xlim(0, 1)
@@ -444,20 +472,23 @@ def plot_eu_jugador2_vs_p(M: PayoffMatrix, p_mark: Optional[float] = None) -> pl
         ax.axvline(pm, color="#7b1fa2", lw=3.0, zorder=10, alpha=0.95)
         ax.scatter([pm], [eu_l_m], s=160, c="#ffc107", zorder=11, edgecolors="#4a148c", linewidths=2)
         ax.scatter([pm], [eu_r_m], s=160, c="#ffc107", zorder=11, edgecolors="#4a148c", linewidths=2)
-    ax.set_xlabel(r"$p$ = probabilidad de que el jugador 1 juegue $A$", fontsize=22)
-    ax.set_ylabel(r"Utilidad esperada del jugador 2", fontsize=22)
+    ax.set_xlabel(
+        r"$p$ = probabilidad de que el jugador 1 juegue $A$",
+        fontsize=13 if compact else 22,
+    )
+    ax.set_ylabel(r"Utilidad esperada del jugador 2", fontsize=13 if compact else 22)
     ax.set_title(
         "Jugador 2: EU al mover la mezcla del jugador 1\ny region de mejor respuesta",
-        fontsize=24,
-        pad=18,
+        fontsize=15 if compact else 24,
+        pad=10 if compact else 18,
     )
-    ax.tick_params(axis="both", labelsize=20)
+    ax.tick_params(axis="both", labelsize=12 if compact else 20)
     ax.grid(True, alpha=0.3)
     ax.legend(
         loc="upper center",
         bbox_to_anchor=(0.5, -0.26),
         ncol=2,
-        fontsize=18,
+        fontsize=11 if compact else 18,
         frameon=True,
         framealpha=0.96,
     )
@@ -566,6 +597,10 @@ st.markdown(
     """
 <style>
 .block-container { padding-top: 1.1rem; }
+h1.fnj-app-title {
+  font-size: clamp(1.15rem, 4vw, 2rem) !important;
+  text-align: center;
+}
 div[data-testid="stExpander"] summary { font-weight: 600; }
 /*
  * Los <div class="payoff-card"> en markdown NO envuelven st.number_input en el DOM (Streamlit
@@ -640,7 +675,20 @@ div.col-plots-pull-spacer {
     unsafe_allow_html=True,
 )
 
-st.title("Del mejor respuesta al equilibrio de Nash (juego 2 por 2)")
+st.markdown(
+    """
+<div style="text-align: center; margin-bottom: 1rem;">
+<h1 class="fnj-app-title" style="font-weight: 700; margin: 0 0 0.45rem 0; line-height: 1.2;">
+Análisis Equilibrio de Nash (2x2)
+</h1>
+<p style="font-size: 1.05rem; margin: 0.25rem 0; line-height: 1.35;">Pr. Humberto Bernal</p>
+<p style="font-size: 0.98rem; margin: 0.25rem 0; line-height: 1.35;">
+<a href="mailto:hbernal@universidadmayor.edu.co">hbernal@universidadmayor.edu.co</a>
+</p>
+</div>
+""",
+    unsafe_allow_html=True,
+)
 st.markdown(
     """
 Jugador 1 elige **fila** ($A$ o $B$), jugador 2 elige **columna** ($L$ o $R$).
@@ -651,7 +699,11 @@ En cada celda el par **(pago de J₁, pago de J₂)** sigue la convencion habitu
 tab_matriz, tab_teoria = st.tabs(["Matriz e interaccion", "Teoria y derivacion"])
 
 with tab_matriz:
-    col_controls, col_plots = st.columns([0.36, 0.64], gap="large")
+    if _MOBILE_UI:
+        col_controls = st.container()
+        col_plots = st.container()
+    else:
+        col_controls, col_plots = st.columns([0.36, 0.64], gap="large")
 
     with col_controls:
         st.markdown(
@@ -682,15 +734,15 @@ with tab_matriz:
         )
         q_br = float(st.session_state.get("qs_expl", 0.5))
         p_br = float(st.session_state.get("ps", 0.5))
-        fig_br = plot_best_response(M, q_cursor=q_br, p_cursor=p_br)
+        fig_br = plot_best_response(M, q_cursor=q_br, p_cursor=p_br, compact=_MOBILE_UI)
         st.markdown('<div class="br-qp-fig-spacer"></div>', unsafe_allow_html=True)
         st.pyplot(fig_br, use_container_width=True)
         plt.close(fig_br)
 
     with col_plots:
-        st.markdown('<div class="col-plots-pull-spacer"></div>', unsafe_allow_html=True)
-        row_sl_q, row_sl_p = st.columns(2, gap="medium")
-        with row_sl_q:
+        if not _MOBILE_UI:
+            st.markdown('<div class="col-plots-pull-spacer"></div>', unsafe_allow_html=True)
+        if _MOBILE_UI:
             q_slider = st.slider(
                 r"Probabilidad $q$ de que el jugador 2 juegue $L$",
                 0.0,
@@ -702,7 +754,6 @@ with tab_matriz:
             eu_a = expected_u1_A(q_slider, M)
             eu_b = expected_u1_B(q_slider, M)
             p_lo, p_hi = br1_correspondence(q_slider, M)
-        with row_sl_p:
             p_slider = st.slider(
                 r"Probabilidad $p$ de que el jugador 1 juegue $A$",
                 0.0,
@@ -714,9 +765,38 @@ with tab_matriz:
             ev_l = expected_u2_L(p_slider, M)
             ev_r = expected_u2_R(p_slider, M)
             q_lo, q_hi = br2_correspondence(p_slider, M)
+        else:
+            row_sl_q, row_sl_p = st.columns(2, gap="medium")
+            with row_sl_q:
+                q_slider = st.slider(
+                    r"Probabilidad $q$ de que el jugador 2 juegue $L$",
+                    0.0,
+                    1.0,
+                    0.5,
+                    0.01,
+                    key="qs_expl",
+                )
+                eu_a = expected_u1_A(q_slider, M)
+                eu_b = expected_u1_B(q_slider, M)
+                p_lo, p_hi = br1_correspondence(q_slider, M)
+            with row_sl_p:
+                p_slider = st.slider(
+                    r"Probabilidad $p$ de que el jugador 1 juegue $A$",
+                    0.0,
+                    1.0,
+                    0.5,
+                    0.01,
+                    key="ps",
+                )
+                ev_l = expected_u2_L(p_slider, M)
+                ev_r = expected_u2_R(p_slider, M)
+                q_lo, q_hi = br2_correspondence(p_slider, M)
 
-        br_msg_q, br_msg_p = st.columns(2, gap="medium")
-        with br_msg_q:
+        if _MOBILE_UI:
+            _bm1, _bm2 = st.container(), st.container()
+        else:
+            _bm1, _bm2 = st.columns(2, gap="medium")
+        with _bm1:
             if p_lo == p_hi:
                 accion = "A" if p_lo >= 0.999 else "B"
                 st.success(
@@ -724,7 +804,7 @@ with tab_matriz:
                 )
             else:
                 st.info("Indiferencia: **cualquier** $p\\in[0,1]$ es mejor respuesta del jugador 1.")
-        with br_msg_p:
+        with _bm2:
             if q_lo == q_hi:
                 accion2 = "L" if q_lo >= 0.999 else "R"
                 st.success(
@@ -733,8 +813,11 @@ with tab_matriz:
             else:
                 st.info("Indiferencia: **cualquier** $q\\in[0,1]$ es mejor respuesta del jugador 2.")
 
-        col_q, col_p = st.columns(2, gap="medium")
-        with col_q:
+        if _MOBILE_UI:
+            _cq, _cp = st.container(), st.container()
+        else:
+            _cq, _cp = st.columns(2, gap="medium")
+        with _cq:
             st.markdown(
                 '<p class="exploracion-br">Exploracion: fije q y vea la mejor respuesta de 1</p>',
                 unsafe_allow_html=True,
@@ -744,7 +827,7 @@ with tab_matriz:
                 f"E[u<sub>1</sub>|B] = {eu_b:.3f}</p>",
                 unsafe_allow_html=True,
             )
-        with col_p:
+        with _cp:
             st.markdown(
                 '<p class="exploracion-br">Exploracion: fije p y vea la mejor respuesta de 2</p>',
                 unsafe_allow_html=True,
@@ -755,18 +838,24 @@ with tab_matriz:
                 unsafe_allow_html=True,
             )
 
-        g1, g2 = st.columns(2, gap="small")
-        with g1:
-            fig1 = plot_eu_jugador1_vs_q(M, q_mark=q_slider)
+        if _MOBILE_UI:
+            _g1, _g2 = st.container(), st.container()
+        else:
+            _g1, _g2 = st.columns(2, gap="small")
+        with _g1:
+            fig1 = plot_eu_jugador1_vs_q(M, q_mark=q_slider, compact=_MOBILE_UI)
             st.pyplot(fig1, use_container_width=True)
             plt.close(fig1)
-        with g2:
-            fig2 = plot_eu_jugador2_vs_p(M, p_mark=p_slider)
+        with _g2:
+            fig2 = plot_eu_jugador2_vs_p(M, p_mark=p_slider, compact=_MOBILE_UI)
             st.pyplot(fig2, use_container_width=True)
             plt.close(fig2)
 
         st.subheader("Resultado: equilibrios de Nash")
-        m1, m2 = st.columns(2)
+        if _MOBILE_UI:
+            m1, m2 = st.container(), st.container()
+        else:
+            m1, m2 = st.columns(2)
         with m1:
             st.metric("Cantidad de Nash puros", str(len(pures)))
         with m2:
